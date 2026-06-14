@@ -1,0 +1,1904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediCare AI — Upload. Understand. Prepare.</title>
+<meta name="description" content="AI-powered medical report assistant built with Microsoft Azure.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   MEDICARE AI — DESIGN SYSTEM (Fluent-inspired)
+   ============================================================ */
+:root{
+  --azure:#0078D4;
+  --azure-dark:#005FA3;
+  --azure-deep:#004578;
+  --secondary:#4CC2FF;
+  --accent:#00B7C3;
+  --success:#16C60C;
+  --success-dark:#107C10;
+  --warning:#FFB900;
+  --warning-dark:#9D6800;
+  --error:#D13438;
+  --bg:#F6F9FC;
+  --card:#FFFFFF;
+  --sidebar:#FFFFFF;
+  --border:#E5EAF2;
+  --text:#1A1A1A;
+  --text-2:#707070;
+  --text-3:#9AA4B2;
+  --radius:16px;
+  --radius-sm:10px;
+  --radius-lg:24px;
+  --shadow-1:0 1px 2px rgba(16,35,68,.04),0 2px 8px rgba(16,35,68,.05);
+  --shadow-2:0 4px 12px rgba(16,35,68,.07),0 12px 32px rgba(16,35,68,.08);
+  --shadow-3:0 12px 28px rgba(0,90,180,.12),0 28px 64px rgba(16,35,68,.14);
+  --glow:0 0 0 4px rgba(0,120,212,.12);
+  --grad-azure:linear-gradient(135deg,#0078D4 0%,#00B7C3 100%);
+  --grad-hero:linear-gradient(135deg,#0A3D74 0%,#0078D4 55%,#00B7C3 100%);
+  --ease:cubic-bezier(.4,0,.2,1);
+  --spring:cubic-bezier(.34,1.4,.45,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',-apple-system,'Segoe UI',sans-serif;
+  background:var(--bg);color:var(--text);
+  font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img,svg{display:block}
+button{font-family:inherit;cursor:pointer;border:none;background:none;font-size:inherit;color:inherit}
+input,select{font-family:inherit;font-size:inherit}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(0,120,212,.18)}
+:focus-visible{outline:3px solid var(--azure);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;animation-iteration-count:1!important}
+}
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:9px;justify-content:center;
+  padding:13px 26px;border-radius:12px;font-weight:600;font-size:15.5px;
+  transition:transform .22s var(--spring),box-shadow .25s var(--ease),background .2s;
+  position:relative;overflow:hidden;white-space:nowrap;min-height:48px;
+}
+.btn svg{width:18px;height:18px;flex:none}
+.btn-primary{background:var(--grad-azure);color:#fff;box-shadow:0 4px 14px rgba(0,120,212,.35)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,120,212,.45)}
+.btn-primary:active{transform:translateY(0) scale(.98)}
+.btn-secondary{background:#fff;color:var(--azure);border:1.5px solid var(--border);box-shadow:var(--shadow-1)}
+.btn-secondary:hover{transform:translateY(-2px);border-color:#BFD7F2;box-shadow:var(--shadow-2)}
+.btn-ghost{color:var(--text-2);padding:10px 18px;min-height:42px;border-radius:10px}
+.btn-ghost:hover{background:rgba(0,120,212,.07);color:var(--azure)}
+.btn-sm{padding:8px 16px;font-size:13.5px;min-height:38px;border-radius:10px}
+.btn .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.5);transform:scale(0);animation:ripple .55s var(--ease);pointer-events:none}
+@keyframes ripple{to{transform:scale(3.2);opacity:0}}
+
+/* ---------- Chips / badges ---------- */
+.badge{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:999px;font-size:13px;font-weight:600}
+.badge-blue{background:rgba(0,120,212,.09);color:var(--azure)}
+.badge-teal{background:rgba(0,183,195,.1);color:#00838C}
+.badge-green{background:rgba(22,198,12,.1);color:var(--success-dark)}
+.badge-amber{background:rgba(255,185,0,.14);color:var(--warning-dark)}
+.badge-red{background:rgba(209,52,56,.09);color:var(--error)}
+.badge-gray{background:#F0F3F8;color:var(--text-2)}
+.dot{width:7px;height:7px;border-radius:50%;flex:none}
+.dot.pulse{animation:dotPulse 1.6s var(--ease) infinite}
+@keyframes dotPulse{0%,100%{box-shadow:0 0 0 0 rgba(22,198,12,.45)}55%{box-shadow:0 0 0 6px rgba(22,198,12,0)}}
+
+/* ---------- Cards ---------- */
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  box-shadow:var(--shadow-1);
+  transition:transform .28s var(--spring),box-shadow .3s var(--ease),border-color .25s;
+}
+.card.lift:hover{transform:translateY(-5px);box-shadow:var(--shadow-2);border-color:#D4E3F5}
+
+/* ---------- Reveal on scroll ---------- */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.visible{opacity:1;transform:none}
+.reveal[data-d="1"]{transition-delay:.08s}.reveal[data-d="2"]{transition-delay:.16s}
+.reveal[data-d="3"]{transition-delay:.24s}.reveal[data-d="4"]{transition-delay:.32s}
+.reveal[data-d="5"]{transition-delay:.4s}
+
+/* ============================================================
+   LANDING
+   ============================================================ */
+#landing{min-height:100vh}
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px clamp(20px,5vw,56px);
+  background:rgba(246,249,252,.55);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-bottom:1px solid transparent;transition:background .3s,border-color .3s,box-shadow .3s;
+}
+.nav.scrolled{background:rgba(255,255,255,.82);border-bottom-color:var(--border);box-shadow:0 2px 16px rgba(16,35,68,.06)}
+.logo{display:flex;align-items:center;gap:11px;font-weight:800;font-size:19px;letter-spacing:-.3px}
+.logo-mark{width:38px;height:38px;border-radius:11px;background:var(--grad-azure);display:grid;place-items:center;box-shadow:0 4px 12px rgba(0,120,212,.35);flex:none}
+.logo-mark svg{width:21px;height:21px}
+.nav-links{display:flex;gap:4px;align-items:center}
+.nav-links a{padding:9px 15px;border-radius:9px;font-size:14.5px;font-weight:500;color:var(--text-2);transition:color .2s,background .2s}
+.nav-links a:hover{color:var(--azure);background:rgba(0,120,212,.06)}
+.nav-cta{display:flex;gap:10px;align-items:center}
+
+/* Hero */
+.hero{
+  position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;
+  padding:148px clamp(20px,5vw,56px) 90px;max-width:1340px;margin:0 auto;
+}
+.hero::before{
+  content:"";position:absolute;top:-220px;right:-160px;width:680px;height:680px;border-radius:50%;
+  background:radial-gradient(circle,rgba(76,194,255,.22),rgba(0,120,212,.08) 45%,transparent 70%);
+  pointer-events:none;filter:blur(8px);animation:floatSlow 9s ease-in-out infinite;
+}
+.hero::after{
+  content:"";position:absolute;bottom:-160px;left:-180px;width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,183,195,.14),transparent 65%);pointer-events:none;
+}
+@keyframes floatSlow{0%,100%{transform:translateY(0)}50%{transform:translateY(22px)}}
+.hero-copy{position:relative;z-index:1}
+.hero-eyebrow{margin-bottom:22px}
+.hero h1{
+  font-size:clamp(36px,4.6vw,60px);line-height:1.08;font-weight:800;letter-spacing:-1.6px;margin-bottom:22px;
+}
+.hero h1 .grad{background:var(--grad-azure);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.sub{font-size:18px;color:var(--text-2);max-width:540px;margin-bottom:34px;line-height:1.65}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:30px}
+.hero-note{display:flex;gap:22px;flex-wrap:wrap;color:var(--text-3);font-size:13.5px;font-weight:500}
+.hero-note span{display:inline-flex;align-items:center;gap:7px}
+.hero-note svg{width:15px;height:15px;color:var(--success-dark)}
+
+/* Hero visual */
+.hero-visual{position:relative;z-index:1;min-height:480px;display:grid;place-items:center}
+.hv-stage{position:relative;width:min(480px,100%);height:470px}
+.hv-glow{position:absolute;inset:12%;border-radius:50%;background:radial-gradient(circle,rgba(0,120,212,.16),transparent 68%);animation:breath 5s ease-in-out infinite}
+@keyframes breath{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.08);opacity:1}}
+.hv-report{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:236px;background:#fff;border-radius:18px;border:1px solid var(--border);
+  box-shadow:var(--shadow-3);padding:20px;animation:floatCard 6s ease-in-out infinite;
+}
+@keyframes floatCard{0%,100%{transform:translate(-50%,-50%) rotate(-1.2deg)}50%{transform:translate(-50%,-56%) rotate(.8deg)}}
+.hv-report .rh{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.hv-report .rh .ric{width:34px;height:34px;border-radius:9px;background:rgba(209,52,56,.08);display:grid;place-items:center;color:var(--error)}
+.hv-report .rh b{font-size:13px;display:block;line-height:1.3}
+.hv-report .rh small{font-size:11px;color:var(--text-3)}
+.hv-line{height:8px;border-radius:5px;background:#EDF2F8;margin-bottom:9px;position:relative;overflow:hidden}
+.hv-line::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(0,120,212,.25),transparent);transform:translateX(-100%);animation:scanline 2.8s var(--ease) infinite}
+.hv-line:nth-child(odd)::after{animation-delay:1.2s}
+@keyframes scanline{60%,100%{transform:translateX(100%)}}
+.hv-line.w70{width:70%}.hv-line.w85{width:85%}.hv-line.w55{width:55%}
+.hv-chiprow{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}
+.hv-chiprow span{font-size:9.5px;font-weight:700;padding:4px 9px;border-radius:99px;background:rgba(0,120,212,.08);color:var(--azure)}
+.hv-agent{
+  position:absolute;display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.86);
+  backdrop-filter:blur(10px);border:1px solid rgba(229,234,242,.9);border-radius:13px;
+  padding:9px 13px;box-shadow:var(--shadow-2);font-size:12px;font-weight:600;white-space:nowrap;
+}
+.hv-agent .av{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;color:#fff;flex:none}
+.hv-agent .av svg{width:15px;height:15px}
+.hv-agent small{display:block;font-weight:500;color:var(--text-3);font-size:10px;line-height:1.2}
+.hv-a1{top:6%;left:-2%;animation:floatCard2 7s ease-in-out infinite}
+.hv-a2{top:18%;right:-4%;animation:floatCard2 8s ease-in-out infinite reverse}
+.hv-a3{bottom:14%;left:0;animation:floatCard2 6.4s ease-in-out .8s infinite}
+.hv-a4{bottom:4%;right:2%;animation:floatCard2 7.6s ease-in-out .4s infinite reverse}
+@keyframes floatCard2{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.hv-azure{
+  position:absolute;top:-2%;right:22%;display:flex;align-items:center;gap:8px;
+  background:#0B2E55;color:#fff;font-size:11.5px;font-weight:600;padding:8px 14px;border-radius:99px;
+  box-shadow:0 8px 24px rgba(11,46,85,.4);animation:floatCard2 9s ease-in-out infinite;
+}
+.hv-ring{position:absolute;left:50%;top:50%;border:1.5px dashed rgba(0,120,212,.25);border-radius:50%;animation:spin 26s linear infinite}
+.hv-ring.r1{width:330px;height:330px;margin:-165px 0 0 -165px}
+.hv-ring.r2{width:430px;height:430px;margin:-215px 0 0 -215px;animation-duration:40s;animation-direction:reverse;border-color:rgba(0,183,195,.2)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hv-node{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--secondary);box-shadow:0 0 12px rgba(76,194,255,.9)}
+
+/* Trust strip */
+.trust{max-width:1340px;margin:0 auto;padding:10px clamp(20px,5vw,56px) 70px}
+.trust p{text-align:center;font-size:12.5px;font-weight:700;letter-spacing:2.2px;text-transform:uppercase;color:var(--text-3);margin-bottom:26px}
+.trust-row{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+.trust-item{
+  display:flex;align-items:center;gap:10px;padding:13px 22px;border-radius:13px;
+  background:#fff;border:1px solid var(--border);box-shadow:var(--shadow-1);
+  font-weight:600;font-size:14px;color:#3D4A5C;
+  transition:transform .25s var(--spring),box-shadow .25s,border-color .25s;
+}
+.trust-item:hover{transform:translateY(-3px);box-shadow:var(--shadow-2);border-color:#CBE0F5}
+.trust-item svg{width:19px;height:19px;color:var(--azure)}
+
+/* Sections */
+.section{max-width:1340px;margin:0 auto;padding:84px clamp(20px,5vw,56px)}
+.sec-head{text-align:center;max-width:680px;margin:0 auto 56px}
+.sec-head .badge{margin-bottom:18px}
+.sec-head h2{font-size:clamp(28px,3.4vw,42px);font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:16px}
+.sec-head p{color:var(--text-2);font-size:17px}
+
+/* Features */
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.feature{padding:30px 28px;position:relative;overflow:hidden}
+.feature::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad-azure);opacity:0;transition:opacity .3s}
+.feature:hover::before{opacity:1}
+.f-icon{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;margin-bottom:20px;color:#fff;box-shadow:0 6px 16px rgba(0,120,212,.25);transition:transform .3s var(--spring)}
+.feature:hover .f-icon{transform:scale(1.08) rotate(-4deg)}
+.f-icon svg{width:25px;height:25px}
+.feature h3{font-size:18.5px;font-weight:700;margin-bottom:9px;letter-spacing:-.3px}
+.feature p{font-size:14.5px;color:var(--text-2);margin-bottom:16px}
+.f-preview{background:#F7FAFE;border:1px solid var(--border);border-radius:12px;padding:13px 15px;font-size:12.5px}
+.f-tags{display:flex;gap:7px;flex-wrap:wrap}
+.f-tags span{padding:5px 11px;border-radius:8px;background:#F0F5FB;border:1px solid var(--border);font-size:12px;font-weight:600;color:#46566B}
+.f-preview .q{display:flex;gap:8px;align-items:flex-start;margin-bottom:7px;color:#3D4A5C}
+.f-preview .q:last-child{margin-bottom:0}
+.f-preview .q svg{width:14px;height:14px;flex:none;margin-top:3px;color:var(--accent)}
+.f-before{color:var(--text-3);text-decoration:line-through;text-decoration-color:rgba(209,52,56,.4);display:block;margin-bottom:6px}
+.f-after{color:#1F6B2E;font-weight:600;display:flex;gap:7px;align-items:center}
+.f-after svg{width:14px;height:14px;color:var(--success-dark)}
+.f-term{display:inline-flex;align-items:center;gap:6px;background:rgba(0,120,212,.08);color:var(--azure);font-weight:600;padding:4px 10px;border-radius:8px;cursor:pointer}
+.f-langs{display:flex;gap:7px;flex-wrap:wrap}
+.f-langs span{padding:5px 12px;border-radius:99px;font-size:12px;font-weight:600;border:1px solid var(--border);background:#fff;color:#46566B}
+.f-langs span.on{background:var(--azure);color:#fff;border-color:var(--azure)}
+.f-refs{display:flex;flex-direction:column;gap:8px}
+.f-refs a{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:600;color:#2C5E8F}
+.f-refs a svg{width:13px;height:13px;color:var(--accent)}
+
+/* How it works */
+.how{position:relative;background:linear-gradient(180deg,#FFFFFF 0%,#F2F8FE 100%);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.flow{max-width:620px;margin:0 auto;position:relative;padding:8px 0}
+.flow::before{
+  content:"";position:absolute;left:31px;top:30px;bottom:30px;width:3px;border-radius:3px;
+  background:linear-gradient(180deg,#0078D4,#00B7C3);
+  box-shadow:0 0 14px rgba(0,150,210,.45);
+}
+.flow-step{display:flex;gap:24px;align-items:flex-start;padding:17px 0;position:relative}
+.flow-num{
+  width:62px;height:62px;flex:none;border-radius:18px;display:grid;place-items:center;
+  background:#fff;border:1px solid var(--border);box-shadow:var(--shadow-1);color:var(--azure);
+  position:relative;z-index:1;transition:transform .3s var(--spring),box-shadow .3s;
+}
+.flow-num svg{width:26px;height:26px}
+.flow-step:hover .flow-num{transform:scale(1.1);box-shadow:0 0 0 8px rgba(0,120,212,.08),var(--shadow-2)}
+.flow-body{padding-top:6px}
+.flow-body h4{font-size:17px;font-weight:700;margin-bottom:4px;letter-spacing:-.2px}
+.flow-body p{font-size:14px;color:var(--text-2)}
+
+/* CTA + Footer */
+.cta-band{
+  margin:0 clamp(20px,5vw,56px) 84px;max-width:1228px;border-radius:var(--radius-lg);
+  background:var(--grad-hero);color:#fff;text-align:center;
+  padding:72px 36px;position:relative;overflow:hidden;box-shadow:var(--shadow-3);
+}
+@media(min-width:1340px){.cta-band{margin-left:auto;margin-right:auto}}
+.cta-band::before{content:"";position:absolute;top:-110px;right:-60px;width:380px;height:380px;border-radius:50%;background:rgba(76,194,255,.25);filter:blur(60px)}
+.cta-band::after{content:"";position:absolute;bottom:-130px;left:-60px;width:360px;height:360px;border-radius:50%;background:rgba(0,183,195,.3);filter:blur(70px)}
+.cta-band h2{font-size:clamp(26px,3.2vw,40px);font-weight:800;letter-spacing:-1px;margin-bottom:14px;position:relative;z-index:1}
+.cta-band p{opacity:.88;max-width:540px;margin:0 auto 32px;position:relative;z-index:1}
+.cta-band .btn-white{background:#fff;color:var(--azure-deep);box-shadow:0 8px 24px rgba(0,0,0,.22);position:relative;z-index:1}
+.cta-band .btn-white:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,.3)}
+footer{border-top:1px solid var(--border);background:#fff}
+.foot{max-width:1340px;margin:0 auto;padding:42px clamp(20px,5vw,56px);display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.foot small{color:var(--text-3);font-size:13px;max-width:560px;line-height:1.6}
+.foot-links{display:flex;gap:20px;font-size:13.5px;font-weight:500;color:var(--text-2)}
+.foot-links a:hover{color:var(--azure)}
+
+/* ============================================================
+   APP — WORKSPACE
+   ============================================================ */
+#app{display:none;min-height:100vh}
+body.in-app #landing{display:none}
+body.in-app #app{display:grid;grid-template-columns:252px 1fr;min-height:100vh}
+
+/* Sidebar */
+.sidebar{
+  background:var(--sidebar);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;padding:20px 14px;gap:6px;
+  position:sticky;top:0;height:100vh;z-index:60;
+}
+.sb-logo{display:flex;align-items:center;gap:10px;padding:6px 10px 20px;font-weight:800;font-size:17px;letter-spacing:-.3px}
+.sb-logo .logo-mark{width:34px;height:34px;border-radius:10px}
+.sb-logo .logo-mark svg{width:18px;height:18px}
+.sb-item{
+  display:flex;align-items:center;gap:13px;padding:11.5px 14px;border-radius:11px;
+  font-size:14.5px;font-weight:500;color:var(--text-2);width:100%;text-align:left;
+  transition:background .18s,color .18s;position:relative;
+}
+.sb-item svg{width:19px;height:19px;flex:none}
+.sb-item:hover{background:#F2F6FB;color:var(--text)}
+.sb-item.active{background:rgba(0,120,212,.09);color:var(--azure);font-weight:600}
+.sb-item.active::before{content:"";position:absolute;left:-14px;top:9px;bottom:9px;width:3.5px;border-radius:3px;background:var(--azure)}
+.sb-sep{height:1px;background:var(--border);margin:10px 8px}
+.sb-foot{margin-top:auto}
+.sb-azure{
+  margin:12px 4px 4px;padding:14px;border-radius:14px;font-size:12px;
+  background:linear-gradient(135deg,#EAF4FD,#E6FAFB);border:1px solid #D5E8F8;
+}
+.sb-azure b{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#0B3C66;margin-bottom:3px}
+.sb-azure span{color:#4A6785}
+.sb-azure small{color:#54708C}
+
+/* Topbar */
+.main{display:flex;flex-direction:column;min-width:0}
+.topbar{
+  display:flex;align-items:center;gap:16px;padding:14px clamp(16px,3vw,32px);
+  background:rgba(255,255,255,.8);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;
+}
+.search{
+  flex:1;max-width:440px;display:flex;align-items:center;gap:10px;
+  background:#F2F6FB;border:1.5px solid transparent;border-radius:11px;padding:10px 15px;
+  transition:border-color .2s,background .2s,box-shadow .2s;
+}
+.search:focus-within{background:#fff;border-color:var(--azure);box-shadow:var(--glow)}
+.search svg{width:17px;height:17px;color:var(--text-3);flex:none}
+.search input{border:none;outline:none;background:transparent;width:100%;font-size:14px;color:var(--text)}
+.search kbd{font-family:inherit;font-size:11px;color:var(--text-3);border:1px solid var(--border);border-radius:6px;padding:2px 7px;background:#fff}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.tb-status{display:none}
+@media(min-width:900px){.tb-status{display:inline-flex}}
+.icon-btn{
+  width:42px;height:42px;border-radius:11px;display:grid;place-items:center;color:var(--text-2);
+  transition:background .2s,color .2s,transform .2s var(--spring);position:relative;
+}
+.icon-btn:hover{background:#F2F6FB;color:var(--azure);transform:translateY(-1px)}
+.icon-btn svg{width:19px;height:19px}
+.icon-btn .nbadge{position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--error);border:2px solid #fff}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--grad-azure);color:#fff;display:grid;place-items:center;font-size:13.5px;font-weight:700;flex:none;box-shadow:0 3px 8px rgba(0,120,212,.3)}
+
+/* Views */
+.view{display:none;padding:clamp(20px,3vw,34px);max-width:1280px;width:100%;margin:0 auto;animation:viewIn .45s var(--ease)}
+.view.active{display:block}
+@keyframes viewIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.view-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:26px}
+.view-head h1{font-size:clamp(22px,2.4vw,29px);font-weight:800;letter-spacing:-.6px;line-height:1.2}
+.view-head .vh-sub{color:var(--text-2);font-size:14.5px;margin-top:5px}
+
+/* Upload zone */
+.upload-zone{
+  border:2px dashed #BFD3EA;border-radius:var(--radius-lg);background:#fff;
+  padding:54px 28px;text-align:center;cursor:pointer;position:relative;overflow:hidden;
+  transition:border-color .25s,background .25s,transform .25s var(--spring),box-shadow .3s;
+}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--azure);background:#F4FAFF;box-shadow:var(--glow)}
+.upload-zone.drag{transform:scale(1.012)}
+.uz-icon{
+  width:76px;height:76px;border-radius:22px;margin:0 auto 20px;display:grid;place-items:center;
+  background:var(--grad-azure);color:#fff;box-shadow:0 10px 26px rgba(0,120,212,.35);
+  animation:uzFloat 3.4s ease-in-out infinite;
+}
+.uz-icon svg{width:34px;height:34px}
+@keyframes uzFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.upload-zone h3{font-size:20px;font-weight:700;letter-spacing:-.4px;margin-bottom:8px}
+.upload-zone p{color:var(--text-2);font-size:14.5px;margin-bottom:18px}
+.upload-zone p u{color:var(--azure);font-weight:600;text-decoration:none;border-bottom:1.5px solid rgba(0,120,212,.4)}
+.uz-formats{display:flex;justify-content:center;gap:9px;flex-wrap:wrap}
+.uz-formats span{font-size:12px;font-weight:700;padding:6px 13px;border-radius:9px;background:#F0F5FB;border:1px solid var(--border);color:#46566B}
+.uz-privacy{margin-top:20px;font-size:12.5px;color:var(--text-3);display:flex;align-items:center;justify-content:center;gap:7px}
+.uz-privacy svg{width:14px;height:14px;color:var(--success-dark)}
+
+/* Stat row */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat{padding:18px 20px;display:flex;gap:14px;align-items:center}
+.stat .s-ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;flex:none}
+.stat .s-ic svg{width:21px;height:21px}
+.stat b{font-size:21px;font-weight:800;letter-spacing:-.5px;display:block;line-height:1.2}
+.stat small{font-size:12.5px;color:var(--text-2);font-weight:500}
+
+/* Processing pipeline */
+.pipeline{padding:28px;display:none}
+.pipeline.show{display:block;animation:viewIn .4s var(--ease)}
+.pl-head{display:flex;align-items:center;gap:14px;margin-bottom:24px;flex-wrap:wrap}
+.pl-head .spinner{width:40px;height:40px;flex:none}
+.pl-head h3{font-size:17.5px;font-weight:700;letter-spacing:-.3px}
+.pl-head p{font-size:13px;color:var(--text-2)}
+.pl-head .pl-pct{margin-left:auto;font-size:24px;font-weight:800;color:var(--azure);letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+.pl-bar{height:7px;border-radius:99px;background:#EDF2F8;overflow:hidden;margin-bottom:26px}
+.pl-bar i{display:block;height:100%;width:0;border-radius:99px;background:var(--grad-azure);transition:width .5s var(--ease);box-shadow:0 0 10px rgba(0,150,210,.5)}
+.pl-steps{display:grid;gap:4px}
+.pl-step{display:flex;align-items:center;gap:15px;padding:11px 14px;border-radius:12px;transition:background .3s}
+.pl-step .ps-ic{
+  width:38px;height:38px;border-radius:11px;flex:none;display:grid;place-items:center;
+  background:#F0F4FA;color:var(--text-3);transition:all .35s var(--ease);
+}
+.pl-step .ps-ic svg{width:18px;height:18px}
+.pl-step b{font-size:14.5px;font-weight:600;color:var(--text-3);transition:color .3s;display:block;line-height:1.3}
+.pl-step small{font-size:12px;color:var(--text-3)}
+.pl-step .ps-state{margin-left:auto;font-size:12px;font-weight:700;color:var(--text-3)}
+.pl-step.working{background:rgba(0,120,212,.05)}
+.pl-step.working .ps-ic{background:var(--grad-azure);color:#fff;box-shadow:0 0 0 5px rgba(0,120,212,.12),0 4px 10px rgba(0,120,212,.3);animation:icThrob 1.4s var(--ease) infinite}
+@keyframes icThrob{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+.pl-step.working b{color:var(--text)}
+.pl-step.working .ps-state{color:var(--azure)}
+.pl-step.done .ps-ic{background:rgba(22,198,12,.12);color:var(--success-dark)}
+.pl-step.done b{color:var(--text)}
+.pl-step.done .ps-state{color:var(--success-dark)}
+.thinking-dots{display:inline-flex;gap:4px;align-items:center}
+.thinking-dots i{width:5px;height:5px;border-radius:50%;background:var(--azure);animation:tdots 1.2s infinite}
+.thinking-dots i:nth-child(2){animation-delay:.18s}
+.thinking-dots i:nth-child(3){animation-delay:.36s}
+@keyframes tdots{0%,100%{opacity:.25;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+.spinner{position:relative}
+.spinner svg{width:100%;height:100%;animation:spin 1.6s linear infinite}
+.spinner circle{fill:none;stroke:#E3ECF6;stroke-width:4}
+.spinner .arc{stroke:url(#spinGrad);stroke-linecap:round;stroke-dasharray:60 130}
+
+/* Results grid */
+.results{display:none}
+.results.show{display:block}
+.res-banner{
+  display:flex;align-items:center;gap:14px;padding:16px 20px;border-radius:var(--radius);
+  background:linear-gradient(135deg,#EFFAEE,#E9F8F4);border:1px solid #CBEAC8;margin-bottom:22px;
+  animation:viewIn .5s var(--ease);
+}
+.res-banner .rb-ic{width:42px;height:42px;border-radius:12px;background:var(--success);color:#fff;display:grid;place-items:center;flex:none;box-shadow:0 4px 12px rgba(22,198,12,.35)}
+.res-banner .rb-ic svg{width:21px;height:21px}
+.res-banner b{font-size:15px;display:block}
+.res-banner span{font-size:13px;color:#3E6B44}
+.res-banner .btn{margin-left:auto}
+.res-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.rcard{padding:24px;display:flex;flex-direction:column;gap:14px;animation:viewIn .55s var(--ease) both}
+.rcard:nth-child(2){animation-delay:.07s}.rcard:nth-child(3){animation-delay:.14s}
+.rcard:nth-child(4){animation-delay:.21s}.rcard:nth-child(5){animation-delay:.28s}.rcard:nth-child(6){animation-delay:.35s}
+.rc-head{display:flex;align-items:center;gap:12px}
+.rc-head .rc-ic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;color:#fff;flex:none}
+.rc-head .rc-ic svg{width:19px;height:19px}
+.rc-head h3{font-size:16.5px;font-weight:700;letter-spacing:-.3px}
+.rc-head small{font-size:12px;color:var(--text-3);display:block}
+.rc-head .rc-act{margin-left:auto;display:flex;gap:6px}
+.rcard p.body{font-size:14.5px;color:#3D4A5C;line-height:1.7}
+.finding{display:flex;gap:12px;padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:#FBFCFE;transition:border-color .2s,transform .2s var(--spring)}
+.finding:hover{border-color:#CCDEF2;transform:translateX(3px)}
+.finding .fi-ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none}
+.finding .fi-ic svg{width:16px;height:16px}
+.finding b{font-size:13.5px;display:block;line-height:1.35}
+.finding small{font-size:12.5px;color:var(--text-2);line-height:1.5;display:block}
+.term-chips{display:flex;flex-wrap:wrap;gap:9px}
+.term-chip{
+  padding:8px 15px;border-radius:99px;font-size:13px;font-weight:600;
+  background:rgba(0,120,212,.07);color:var(--azure);border:1px solid rgba(0,120,212,.18);
+  transition:all .22s var(--spring);
+}
+.term-chip:hover{background:rgba(0,120,212,.13);transform:translateY(-2px);box-shadow:0 4px 10px rgba(0,120,212,.18)}
+.term-chip[aria-expanded="true"]{background:var(--azure);color:#fff}
+.term-detail{
+  background:#F4F9FF;border:1px solid #D5E6F7;border-radius:12px;padding:15px 17px;font-size:13.5px;
+  color:#2C4055;line-height:1.65;display:none;animation:viewIn .3s var(--ease);
+}
+.term-detail.show{display:block}
+.term-detail b{color:var(--azure-deep)}
+.qitem{display:flex;gap:12px;align-items:flex-start;padding:11px 13px;border-radius:11px;transition:background .2s}
+.qitem:hover{background:#F7FAFE}
+.qitem input[type=checkbox]{
+  width:19px;height:19px;margin-top:2px;accent-color:var(--azure);cursor:pointer;flex:none;
+}
+.qitem label{font-size:14px;color:#33414F;line-height:1.55;cursor:pointer}
+.qitem.checked label{color:var(--text-3);text-decoration:line-through}
+.tabs{display:flex;gap:5px;background:#F0F4FA;border-radius:11px;padding:5px}
+.tab{flex:1;padding:8.5px 8px;border-radius:8px;font-size:13px;font-weight:600;color:var(--text-2);transition:all .22s;text-align:center}
+.tab:hover{color:var(--azure)}
+.tab.active{background:#fff;color:var(--azure);box-shadow:var(--shadow-1)}
+.trans-body{font-size:14.5px;color:#3D4A5C;line-height:1.75;min-height:128px}
+.trans-body[lang="zh"],.trans-body[lang="ja"]{line-height:1.9}
+.refitem{display:flex;align-items:center;gap:13px;padding:12px 14px;border-radius:12px;border:1px solid var(--border);transition:border-color .2s,box-shadow .2s,transform .2s var(--spring)}
+.refitem:hover{border-color:#BFD9F0;box-shadow:var(--shadow-1);transform:translateY(-2px)}
+.refitem .ref-ic{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;flex:none;font-size:10.5px;font-weight:800;color:#fff;letter-spacing:.3px}
+.refitem b{font-size:13.5px;display:block;line-height:1.3}
+.refitem small{font-size:12px;color:var(--text-3)}
+.conf{margin-left:auto;text-align:right;flex:none}
+.conf b{font-size:13px;color:var(--success-dark)}
+.conf .conf-bar{width:64px;height:5px;border-radius:99px;background:#EDF2F8;margin-top:5px;overflow:hidden}
+.conf .conf-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#16C60C,#00B7C3)}
+.disclaimer{
+  margin-top:22px;display:flex;gap:13px;padding:16px 18px;border-radius:var(--radius);
+  background:#FFF9E8;border:1px solid #F2E3B3;font-size:13px;color:#6B5618;line-height:1.6;
+}
+.disclaimer svg{width:19px;height:19px;flex:none;color:var(--warning-dark);margin-top:1px}
+
+/* Agents page */
+.agents-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;position:relative}
+.agent-card{padding:24px;position:relative;overflow:hidden}
+.agent-card.orch{grid-column:1/-1;background:linear-gradient(135deg,#0B2E55 0%,#0F4C81 60%,#0B6F86 100%);color:#fff;border:none}
+.agent-card.orch .ag-task,.agent-card.orch small{color:rgba(255,255,255,.75)}
+.ag-top{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.ag-av{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;color:#fff;flex:none;box-shadow:0 6px 14px rgba(0,120,212,.3);position:relative}
+.ag-av svg{width:24px;height:24px}
+.ag-av .ag-live{position:absolute;bottom:-3px;right:-3px;width:13px;height:13px;border-radius:50%;background:var(--success);border:2.5px solid #fff;animation:dotPulse 1.8s infinite}
+.ag-top h3{font-size:16px;font-weight:700;letter-spacing:-.3px;line-height:1.25}
+.ag-top small{font-size:12px;color:var(--text-3)}
+.ag-task{font-size:13.5px;color:var(--text-2);margin-bottom:16px;min-height:42px;line-height:1.55}
+.ag-prog{height:6px;border-radius:99px;background:rgba(120,140,170,.18);overflow:hidden;margin-bottom:9px}
+.ag-prog i{display:block;height:100%;border-radius:99px;background:var(--grad-azure);transition:width 1s var(--ease);box-shadow:0 0 8px rgba(0,160,220,.5)}
+.agent-card.orch .ag-prog i{background:linear-gradient(90deg,#4CC2FF,#00E5D0)}
+.ag-meta{display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:var(--text-3)}
+.agent-card.orch .ag-meta{color:rgba(255,255,255,.65)}
+.ag-pulseline{position:absolute;bottom:0;left:0;right:0;height:2.5px;overflow:hidden}
+.ag-pulseline::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,var(--secondary),transparent);transform:translateX(-100%);animation:scanline 2.2s linear infinite}
+#agentWires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.agents-grid>.agent-card{z-index:1}
+.wire{fill:none;stroke:rgba(0,120,212,.22);stroke-width:2;stroke-dasharray:7 9;animation:wireflow 1.2s linear infinite}
+@keyframes wireflow{to{stroke-dashoffset:-16}}
+
+/* History */
+.filter-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.filter-row .search{max-width:330px}
+.select{
+  display:flex;align-items:center;gap:9px;background:#fff;border:1.5px solid var(--border);
+  border-radius:11px;padding:0 14px;height:46px;font-size:14px;font-weight:500;color:var(--text-2);
+}
+.select select{border:none;outline:none;background:transparent;color:var(--text);font-weight:500;cursor:pointer}
+.hist-list{display:flex;flex-direction:column;gap:0;position:relative;padding-left:30px}
+.hist-list::before{content:"";position:absolute;left:9px;top:18px;bottom:18px;width:2.5px;border-radius:3px;background:linear-gradient(180deg,#BFD9F0,#C9EDEF)}
+.hist-item{position:relative;margin-bottom:14px}
+.hist-item::before{
+  content:"";position:absolute;left:-27.5px;top:26px;width:13px;height:13px;border-radius:50%;
+  background:#fff;border:3.5px solid var(--azure);box-shadow:0 0 0 4px rgba(0,120,212,.12);
+}
+.hist-card{display:flex;align-items:center;gap:16px;padding:17px 20px}
+.hist-card .h-ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;flex:none}
+.hist-card .h-ic svg{width:20px;height:20px}
+.hist-card b{font-size:14.5px;display:block;line-height:1.3}
+.hist-card .h-meta{font-size:12.5px;color:var(--text-3);display:flex;gap:10px;flex-wrap:wrap;margin-top:3px}
+.hist-card .h-act{margin-left:auto;display:flex;gap:5px;align-items:center;flex:none}
+.h-act .icon-btn{width:38px;height:38px}
+.h-act .icon-btn:hover.danger{color:var(--error);background:rgba(209,52,56,.07)}
+
+/* Knowledge */
+.kb-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.kb-card{padding:26px 22px;text-align:center;cursor:pointer}
+.kb-card .kb-ic{
+  width:62px;height:62px;border-radius:18px;margin:0 auto 16px;display:grid;place-items:center;color:#fff;
+  transition:transform .3s var(--spring);box-shadow:0 8px 18px rgba(0,120,212,.22);
+}
+.kb-card:hover .kb-ic{transform:scale(1.1) rotate(-5deg)}
+.kb-card .kb-ic svg{width:29px;height:29px}
+.kb-card h3{font-size:16px;font-weight:700;margin-bottom:5px}
+.kb-card p{font-size:12.5px;color:var(--text-2);line-height:1.5}
+.kb-card .kb-count{margin-top:13px;font-size:11.5px;font-weight:700;color:var(--azure)}
+
+/* Profile / settings */
+.profile-grid{display:grid;grid-template-columns:340px 1fr;gap:22px;align-items:start}
+.profile-card{padding:30px;text-align:center}
+.profile-card .avatar{width:84px;height:84px;font-size:27px;margin:0 auto 16px;border-radius:26px}
+.profile-card h2{font-size:20px;font-weight:800;letter-spacing:-.4px}
+.profile-card .p-mail{font-size:13.5px;color:var(--text-2);margin-bottom:16px}
+.p-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:20px;padding-top:20px;border-top:1px solid var(--border)}
+.p-stats b{font-size:19px;font-weight:800;display:block;color:var(--azure)}
+.p-stats small{font-size:11.5px;color:var(--text-3)}
+.set-group{padding:6px 24px;margin-bottom:20px}
+.set-group h3{font-size:15px;font-weight:700;padding:18px 0 6px;letter-spacing:-.2px}
+.set-row{display:flex;align-items:center;gap:16px;padding:16px 0;border-top:1px solid var(--border)}
+.set-row:first-of-type{border-top:none}
+.set-row b{font-size:14.5px;display:block;font-weight:600}
+.set-row small{font-size:13px;color:var(--text-2);display:block;margin-top:2px}
+.set-row .set-ctl{margin-left:auto;flex:none}
+.toggle{position:relative;width:46px;height:26px;border-radius:99px;background:#D4DCE8;transition:background .25s;flex:none}
+.toggle::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.2);transition:transform .25s var(--spring)}
+.toggle[aria-checked="true"]{background:var(--azure)}
+.toggle[aria-checked="true"]::after{transform:translateX(20px)}
+
+/* Empty / error / skeleton */
+.empty{text-align:center;padding:64px 24px;display:none}
+.empty.show{display:block;animation:viewIn .4s var(--ease)}
+.empty .em-ic{width:88px;height:88px;border-radius:28px;margin:0 auto 22px;background:linear-gradient(135deg,#EAF4FD,#E6FAFB);display:grid;place-items:center;color:var(--azure)}
+.empty .em-ic svg{width:40px;height:40px}
+.empty h3{font-size:19px;font-weight:700;margin-bottom:8px;letter-spacing:-.3px}
+.empty p{color:var(--text-2);font-size:14.5px;max-width:380px;margin:0 auto 22px}
+.error-banner{
+  display:none;align-items:flex-start;gap:13px;padding:16px 18px;border-radius:var(--radius);
+  background:#FDF3F4;border:1px solid #F0C6C8;margin-bottom:20px;
+}
+.error-banner.show{display:flex;animation:shake .4s var(--ease)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.error-banner svg{width:20px;height:20px;color:var(--error);flex:none;margin-top:2px}
+.error-banner b{font-size:14px;color:#8F1D20;display:block}
+.error-banner span{font-size:13px;color:#A04A4D}
+.error-banner .btn{margin-left:auto;flex:none}
+.skel{position:relative;overflow:hidden;background:#EDF2F8;border-radius:8px}
+.skel::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.75),transparent);transform:translateX(-100%);animation:scanline 1.4s var(--ease) infinite}
+
+/* Toast */
+#toasts{position:fixed;bottom:26px;right:26px;z-index:300;display:flex;flex-direction:column;gap:10px}
+.toast{
+  display:flex;align-items:center;gap:12px;background:#1A2433;color:#fff;border-radius:13px;
+  padding:13px 18px;font-size:13.5px;font-weight:500;box-shadow:0 12px 32px rgba(10,20,40,.35);
+  animation:toastIn .4s var(--spring);max-width:360px;
+}
+.toast svg{width:17px;height:17px;color:#5EE08A;flex:none}
+@keyframes toastIn{from{opacity:0;transform:translateY(18px) scale(.95)}to{opacity:1;transform:none}}
+.toast.out{animation:toastOut .3s var(--ease) forwards}
+@keyframes toastOut{to{opacity:0;transform:translateY(10px)}}
+
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(12,24,44,.45);backdrop-filter:blur(6px);z-index:200;display:none;place-items:center;padding:20px}
+.modal-bg.show{display:grid;animation:fadeIn .25s var(--ease)}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{background:#fff;border-radius:20px;max-width:520px;width:100%;padding:30px;box-shadow:var(--shadow-3);animation:modalIn .35s var(--spring);max-height:84vh;overflow:auto}
+@keyframes modalIn{from{opacity:0;transform:translateY(22px) scale(.96)}to{opacity:1;transform:none}}
+.modal h3{font-size:19px;font-weight:800;letter-spacing:-.4px;margin-bottom:6px;display:flex;align-items:center;gap:11px}
+.modal .m-sub{color:var(--text-2);font-size:13.5px;margin-bottom:18px}
+.modal p.m-body{font-size:14.5px;color:#3D4A5C;line-height:1.7;margin-bottom:16px}
+.modal .m-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:8px}
+
+
+/* ---------- Dark mode (workspace) ---------- */
+body.dark.in-app{--bg:#0E1622;--card:#16202E;--sidebar:#121B28;--border:#24334A;--text:#E8EDF4;--text-2:#9FB0C3;--text-3:#647890}
+body.dark.in-app .topbar{background:rgba(18,27,40,.82)}
+body.dark.in-app .search{background:#1B2738}
+body.dark.in-app .search:focus-within{background:#1F2D40}
+body.dark.in-app .search kbd{background:#243246;border-color:#33455F}
+body.dark.in-app .icon-btn:hover,body.dark.in-app .sb-item:hover{background:#1D2A3C}
+body.dark.in-app .sb-item.active{background:rgba(76,194,255,.12);color:var(--secondary)}
+body.dark.in-app .sb-azure{background:linear-gradient(135deg,#14283C,#103240);border-color:#1F3D57}
+body.dark.in-app .sb-azure b{color:#BCD9F2}
+body.dark.in-app .sb-azure small{color:#7E99B5}
+body.dark.in-app .upload-zone{background:#16202E;border-color:#33455F}
+body.dark.in-app .upload-zone:hover,body.dark.in-app .upload-zone.drag{background:#182838}
+body.dark.in-app .uz-formats span,body.dark.in-app .f-tags span{background:#1D2A3C;border-color:#2C3D55;color:#AFC2D8}
+body.dark.in-app .pl-step .ps-ic{background:#1D2A3C}
+body.dark.in-app .pl-bar,body.dark.in-app .ag-prog,body.dark.in-app .conf .conf-bar{background:#1D2A3C}
+body.dark.in-app .finding{background:#1A2536;border-color:#27374E}
+body.dark.in-app .term-detail{background:#16283C;border-color:#27486B;color:#BFD4E8}
+body.dark.in-app .term-detail b{color:#7CC4FF}
+body.dark.in-app .tabs{background:#1D2A3C}
+body.dark.in-app .tab.active{background:#2A3B54;color:#7CC4FF}
+body.dark.in-app .rcard p.body,body.dark.in-app .trans-body{color:#C3D2E2}
+body.dark.in-app .qitem label{color:#C3D2E2}
+body.dark.in-app .qitem:hover{background:#1A2536}
+body.dark.in-app .res-banner{background:linear-gradient(135deg,#15301E,#123230);border-color:#1F4A2C}
+body.dark.in-app .res-banner span{color:#8FC9A0}
+body.dark.in-app .disclaimer{background:#2E2712;border-color:#4A3F1B;color:#D8C075}
+body.dark.in-app .error-banner{background:#321A1C;border-color:#5A2A2E}
+body.dark.in-app .error-banner b{color:#F2A6A9}
+body.dark.in-app .error-banner span{color:#C98286}
+body.dark.in-app .select,body.dark.in-app .btn-secondary{background:#1B2738;color:#BFD4E8;border-color:#2C3D55}
+body.dark.in-app .modal{background:#16202E}
+body.dark.in-app .empty .em-ic{background:linear-gradient(135deg,#14283C,#103240)}
+body.dark.in-app .badge-gray{background:#1D2A3C;color:#9FB0C3}
+body.dark.in-app .agent-card.orch{background:linear-gradient(135deg,#0A1F38 0%,#0C3658 60%,#0A4A5E 100%)}
+body.dark.in-app .f-preview{background:#1A2536;border-color:#27374E}
+/* ---------- Body map ---------- */
+.bm-wrap{display:flex;gap:22px;align-items:stretch}
+.bm-svg{flex:none;width:190px}
+.bm-svg svg{width:100%;height:auto}
+.bm-body{fill:rgba(0,120,212,.06);stroke:#BFD7F2;stroke-width:2}
+body.dark.in-app .bm-body{fill:rgba(76,194,255,.06);stroke:#33557A}
+.bm-organ{cursor:pointer;transition:transform .2s var(--spring)}
+.bm-organ .core{stroke:#fff;stroke-width:1.5}
+.bm-organ:hover{transform:scale(1.12)}
+.bm-organ.flag .halo{animation:bmHalo 1.8s var(--ease) infinite}
+@keyframes bmHalo{0%{r:9;opacity:.55}70%{r:18;opacity:0}100%{r:18;opacity:0}}
+.bm-organ.sel .core{stroke:#1A1A1A;stroke-width:2}
+body.dark.in-app .bm-organ.sel .core{stroke:#fff}
+.bm-list{flex:1;display:flex;flex-direction:column;gap:10px;min-width:0}
+.bm-item{cursor:pointer}
+.bm-item.sel{border-color:var(--azure);box-shadow:var(--glow)}
+@media(max-width:640px){.bm-wrap{flex-direction:column;align-items:center}}
+
+/* Mobile nav + responsive */
+.hamburger{display:none}
+.mobile-tabs{display:none}
+@media(max-width:1080px){
+  .features-grid{grid-template-columns:repeat(2,1fr)}
+  .agents-grid{grid-template-columns:repeat(2,1fr)}
+  .kb-grid{grid-template-columns:repeat(3,1fr)}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .res-grid{grid-template-columns:1fr}
+  .profile-grid{grid-template-columns:1fr}
+}
+@media(max-width:920px){
+  .hero{grid-template-columns:1fr;padding-top:120px;text-align:center}
+  .hero p.sub{margin-left:auto;margin-right:auto}
+  .hero-actions,.hero-note{justify-content:center}
+  .hero-visual{min-height:430px}
+  .nav-links{display:none}
+  body.in-app #app{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .mobile-tabs{
+    display:flex;position:fixed;bottom:0;left:0;right:0;z-index:90;
+    background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-top:1px solid var(--border);
+    padding:8px 10px calc(10px + env(safe-area-inset-bottom));justify-content:space-around;
+  }
+  .mobile-tabs button{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;font-weight:600;color:var(--text-3);padding:6px 10px;border-radius:10px;min-width:58px}
+  .mobile-tabs button svg{width:21px;height:21px}
+  .mobile-tabs button.active{color:var(--azure);background:rgba(0,120,212,.08)}
+  .view{padding-bottom:96px}
+}
+@media(max-width:640px){
+  .features-grid,.agents-grid{grid-template-columns:1fr}
+  .kb-grid{grid-template-columns:repeat(2,1fr)}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .nav-cta .btn-ghost{display:none}
+  .hero h1{letter-spacing:-1px}
+  .search kbd{display:none}
+  .res-banner{flex-wrap:wrap}
+  .res-banner .btn{margin-left:0;width:100%}
+  .hist-card{flex-wrap:wrap}
+  .hist-card .h-act{margin-left:0;width:100%;justify-content:flex-end}
+  .foot{flex-direction:column;align-items:flex-start}
+}
+
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<linearGradient id="spinGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0078D4"/><stop offset="100%" stop-color="#00B7C3"/></linearGradient>
+<symbol id="i-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2.5-7 4 14 2.5-7h5"/></symbol>
+<symbol id="i-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></symbol>
+<symbol id="i-spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 16l.9 2.1L22 19l-2.1.9L19 22l-.9-2.1L16 19l2.1-.9z"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
+<symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></symbol>
+<symbol id="i-cloud" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 1 0-.9-8.9 7 7 0 1 0-11.3 6.4"/><path d="M6 19h11.5"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+<symbol id="i-bot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 8V4M8 4h8"/><circle cx="9" cy="13.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1" fill="currentColor" stroke="none"/><path d="M9.5 17h5"/></symbol>
+<symbol id="i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5h.1a1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></symbol>
+<symbol id="i-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5V20a2.5 2.5 0 0 1-4.96.44A2.5 2.5 0 0 1 5 18a2.5 2.5 0 0 1-1.96-4A2.5 2.5 0 0 1 3 9.5 2.5 2.5 0 0 1 5.5 7 2.5 2.5 0 0 1 7 4.5 2.5 2.5 0 0 1 9.5 2z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5V20a2.5 2.5 0 0 0 4.96.44A2.5 2.5 0 0 0 19 18a2.5 2.5 0 0 0 1.96-4A2.5 2.5 0 0 0 21 9.5 2.5 2.5 0 0 0 18.5 7 2.5 2.5 0 0 0 17 4.5 2.5 2.5 0 0 0 14.5 2z"/></symbol>
+<symbol id="i-drop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.7s6.5 7 6.5 11.3a6.5 6.5 0 0 1-13 0C5.5 9.7 12 2.7 12 2.7z"/></symbol>
+<symbol id="i-bone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 10c.8 0 1.5-.3 2.1-.9a3 3 0 1 0-4.2-4.2c-.6.6-.9 1.3-.9 2.1l-4 4c-.8 0-1.5.3-2.1.9a3 3 0 1 0 4.2 4.2c.6-.6.9-1.3.9-2.1z" transform="rotate(7 12 12)"/></symbol>
+<symbol id="i-lung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v8"/><path d="M9 9c-1.5-1-4-1-5.5 1.5C2 13.2 2 17.5 2 19c0 1.2 1 2 2.2 2C7 21 9 19.8 9 17z"/><path d="M15 9c1.5-1 4-1 5.5 1.5C22 13.2 22 17.5 22 19c0 1.2-1 2-2.2 2C17 21 15 19.8 15 17z"/></symbol>
+<symbol id="i-kidney" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4c-4 0-8 3.6-8 8s4 8 8 8c2.2 0 3-1.4 3-2.7 0-1.6-1.6-2-1.6-3.6 0-1.2 1.1-1.5 1.1-3.2C16.5 8 17 7.4 17 6.3 17 5 16.2 4 14 4z"/></symbol>
+<symbol id="i-liver" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9c0-2.2 1.8-4 4-4h10a4 4 0 0 1 4 4c0 5-4 9-9 10l-3.5.8A2 2 0 0 1 6 17.9V14a8.5 8.5 0 0 1-3-5z"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></symbol>
+<symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></symbol>
+<symbol id="i-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><circle cx="12" cy="17" r=".5" fill="currentColor"/></symbol>
+<symbol id="i-flask" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v6.5L4.3 18A2.4 2.4 0 0 0 6.4 21.5h11.2a2.4 2.4 0 0 0 2.1-3.5L14 8.5V2"/><path d="M8 2h8"/><path d="M7 15h10"/></symbol>
+<symbol id="i-scan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></symbol>
+<symbol id="i-translate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h7M7.5 3v2c0 4.4-2.5 7.5-5 9"/><path d="M5.5 9c.8 2.2 3 4.5 5.5 5.5"/><path d="M12 20l4-9 4 9M13.1 17.5h5.8"/></symbol>
+<symbol id="i-net" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.2"/><circle cx="5" cy="18" r="2.2"/><circle cx="19" cy="18" r="2.2"/><path d="M11 7l-4.5 9M13 7l4.5 9M7.2 18h9.6"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+<symbol id="i-speaker" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></symbol>
+</defs>
+</svg>
+
+<!-- ================= LANDING ================= -->
+<div id="landing">
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <a class="logo" href="#top">
+      <span class="logo-mark"><svg fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3 12h4l2.5-7 4 14 2.5-7h5"/></svg></span>
+      MediCare&nbsp;AI
+    </a>
+    <div class="nav-links">
+      <a href="#top">Home</a><a href="#features">Features</a><a href="#agents">AI Agents</a>
+      <a href="#how">How it works</a><a href="#about">About</a><a href="#contact">Contact</a>
+    </div>
+    <div class="nav-cta">
+      <button class="btn btn-ghost" onclick="enterApp()">Sign In</button>
+      <button class="btn btn-primary btn-sm" onclick="enterApp()" style="min-height:44px;padding:11px 22px">Get Started</button>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="hero-copy">
+      <span class="badge badge-blue hero-eyebrow"><svg width="14" height="14"><use href="#i-spark"/></svg> Powered by Microsoft Azure AI &nbsp;·&nbsp; Upload. Understand. Prepare.</span>
+      <h1>Understand medical reports with <span class="grad">intelligent AI&nbsp;agents</span></h1>
+      <p class="sub">Upload any medical report and receive easy-to-understand explanations, trusted references, and personalized discussion points — powered by Microsoft Azure AI.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" onclick="enterApp()"><svg><use href="#i-upload"/></svg> Upload Report</button>
+        <button class="btn btn-secondary" onclick="enterApp(true)"><svg><use href="#i-eye"/></svg> View Live Demo</button>
+        <button class="btn btn-ghost" onclick="enterApp()">Try AI Workspace →</button>
+      </div>
+      <div class="hero-note">
+        <span><svg><use href="#i-check"/></svg> No diagnosis — education only</span>
+        <span><svg><use href="#i-check"/></svg> Private &amp; encrypted</span>
+        <span><svg><use href="#i-check"/></svg> 4 languages</span>
+      </div>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <div class="hv-stage">
+        <div class="hv-glow"></div>
+        <div class="hv-ring r1"><span class="hv-node" style="top:-5px;left:50%"></span></div>
+        <div class="hv-ring r2"><span class="hv-node" style="bottom:18%;right:2%"></span></div>
+        <div class="hv-report">
+          <div class="rh">
+            <span class="ric"><svg width="17" height="17"><use href="#i-doc"/></svg></span>
+            <div><b>Blood_Test_Report.pdf</b><small>Full Blood Count · 2 pages</small></div>
+          </div>
+          <div class="hv-line w85"></div><div class="hv-line"></div><div class="hv-line w70"></div>
+          <div class="hv-line w55"></div><div class="hv-line w85"></div>
+          <div class="hv-chiprow"><span>Hemoglobin</span><span>HbA1c</span><span>LDL-C</span></div>
+        </div>
+        <div class="hv-agent hv-a1"><span class="av" style="background:var(--azure)"><svg><use href="#i-scan"/></svg></span><span>Report Reader<small>Extracting findings…</small></span></div>
+        <div class="hv-agent hv-a2"><span class="av" style="background:var(--accent)"><svg><use href="#i-spark"/></svg></span><span>Medical Simplifier<small>Plain English…</small></span></div>
+        <div class="hv-agent hv-a3"><span class="av" style="background:#6B5BD2"><svg><use href="#i-translate"/></svg></span><span>Translation Agent<small>EN · MY · 中文 · 日本語</small></span></div>
+        <div class="hv-agent hv-a4"><span class="av" style="background:#0B6F86"><svg><use href="#i-book"/></svg></span><span>Research Agent<small>WHO · NIH · MOH</small></span></div>
+        <div class="hv-azure"><svg width="14" height="14"><use href="#i-cloud"/></svg> Azure AI Connected</div>
+      </div>
+    </div>
+  </header>
+
+  <section class="trust reveal">
+    <p>Built for trust, privacy &amp; healthcare readiness</p>
+    <div class="trust-row">
+      <div class="trust-item"><svg><use href="#i-cloud"/></svg> Microsoft Azure</div>
+      <div class="trust-item"><svg><use href="#i-spark"/></svg> AI Powered</div>
+      <div class="trust-item"><svg><use href="#i-shield"/></svg> Secure Upload</div>
+      <div class="trust-item"><svg><use href="#i-eye"/></svg> Privacy First</div>
+      <div class="trust-item"><svg><use href="#i-pulse"/></svg> Healthcare Ready</div>
+    </div>
+  </section>
+
+  <section class="section" id="features">
+    <div class="sec-head reveal">
+      <span class="badge badge-teal"><svg width="13" height="13"><use href="#i-grid"/></svg> Capabilities</span>
+      <h2>Everything you need to walk into your next appointment prepared</h2>
+      <p>Six intelligent capabilities working together — from raw report to confident conversation.</p>
+    </div>
+    <div class="features-grid">
+      <article class="card lift feature reveal">
+        <div class="f-icon" style="background:var(--grad-azure)"><svg><use href="#i-upload"/></svg></div>
+        <h3>Upload Reports</h3>
+        <p>Drag &amp; drop any medical document. Blood tests, CT, MRI, screenings and summaries.</p>
+        <div class="f-preview f-tags"><span>PDF</span><span>PNG</span><span>JPEG</span><span>DOCX</span></div>
+      </article>
+      <article class="card lift feature reveal" data-d="1">
+        <div class="f-icon" style="background:linear-gradient(135deg,#00B7C3,#16C60C)"><svg><use href="#i-spark"/></svg></div>
+        <h3>AI Summary</h3>
+        <p>Turns dense medical language into plain English anyone can understand.</p>
+        <div class="f-preview">
+          <span class="f-before">"Mild microcytic hypochromic anemia"</span>
+          <span class="f-after"><svg><use href="#i-check"/></svg> "Your red blood cells are smaller and paler than usual — often linked to low iron."</span>
+        </div>
+      </article>
+      <article class="card lift feature reveal" data-d="2">
+        <div class="f-icon" style="background:linear-gradient(135deg,#6B5BD2,#4CC2FF)"><svg><use href="#i-book"/></svg></div>
+        <h3>Medical Dictionary</h3>
+        <p>Click any medical term for an instant, friendly explanation.</p>
+        <div class="f-preview">Try it: <span class="f-term" onclick="this.nextElementSibling.style.display='block'"><svg width="12" height="12"><use href="#i-search"/></svg> HbA1c</span><span style="display:none;margin-top:9px;color:#2C5E8F"> → Your average blood sugar over ~3 months.</span></div>
+      </article>
+      <article class="card lift feature reveal">
+        <div class="f-icon" style="background:linear-gradient(135deg,#0078D4,#6B5BD2)"><svg><use href="#i-chat"/></svg></div>
+        <h3>Doctor Questions</h3>
+        <p>Generates intelligent, personalized questions for your appointment.</p>
+        <div class="f-preview">
+          <div class="q"><svg><use href="#i-check"/></svg> Should I repeat this test, and when?</div>
+          <div class="q"><svg><use href="#i-check"/></svg> Could my diet affect these results?</div>
+        </div>
+      </article>
+      <article class="card lift feature reveal" data-d="1">
+        <div class="f-icon" style="background:linear-gradient(135deg,#00B7C3,#0078D4)"><svg><use href="#i-translate"/></svg></div>
+        <h3>Translation</h3>
+        <p>Read every explanation in the language you're most comfortable with.</p>
+        <div class="f-preview f-langs"><span class="on">English</span><span>Bahasa Melayu</span><span>中文</span><span>日本語</span></div>
+      </article>
+      <article class="card lift feature reveal" data-d="2">
+        <div class="f-icon" style="background:linear-gradient(135deg,#107C10,#00B7C3)"><svg><use href="#i-shield"/></svg></div>
+        <h3>Trusted References</h3>
+        <p>Grounded in reputable sources via Microsoft Foundry IQ retrieval.</p>
+        <div class="f-preview f-refs">
+          <a href="#" onclick="return false"><svg><use href="#i-link"/></svg> World Health Organization (WHO)</a>
+          <a href="#" onclick="return false"><svg><use href="#i-link"/></svg> National Institutes of Health (NIH)</a>
+          <a href="#" onclick="return false"><svg><use href="#i-link"/></svg> Ministry of Health (MOH) · Journals</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="how" id="how">
+    <div class="section">
+      <div class="sec-head reveal">
+        <span class="badge badge-blue"><svg width="13" height="13"><use href="#i-net"/></svg> Agent workflow</span>
+        <h2>How it works</h2>
+        <p>A coordinated team of AI agents processes your report in seconds.</p>
+      </div>
+      <div class="flow">
+        <div class="flow-step reveal"><div class="flow-num"><svg><use href="#i-upload"/></svg></div><div class="flow-body"><h4>Upload</h4><p>Drop in your medical report — PDF, image or DOCX.</p></div></div>
+        <div class="flow-step reveal" data-d="1"><div class="flow-num"><svg><use href="#i-scan"/></svg></div><div class="flow-body"><h4>Document Analysis</h4><p>Azure Document Intelligence extracts text, tables and values.</p></div></div>
+        <div class="flow-step reveal" data-d="2"><div class="flow-num"><svg><use href="#i-net"/></svg></div><div class="flow-body"><h4>AI Agent Collaboration</h4><p>The Orchestrator dispatches specialist agents in parallel.</p></div></div>
+        <div class="flow-step reveal" data-d="1"><div class="flow-num"><svg><use href="#i-spark"/></svg></div><div class="flow-body"><h4>Medical Summary</h4><p>Findings are rewritten in clear, patient-friendly language.</p></div></div>
+        <div class="flow-step reveal" data-d="2"><div class="flow-num"><svg><use href="#i-chat"/></svg></div><div class="flow-body"><h4>Questions</h4><p>Smart discussion points are generated for your doctor visit.</p></div></div>
+        <div class="flow-step reveal" data-d="1"><div class="flow-num"><svg><use href="#i-translate"/></svg></div><div class="flow-body"><h4>Translation</h4><p>Everything is translated into Malay, Chinese and Japanese.</p></div></div>
+        <div class="flow-step reveal" data-d="2"><div class="flow-num" style="background:var(--grad-azure);color:#fff;border:none"><svg><use href="#i-check"/></svg></div><div class="flow-body"><h4>Completed</h4><p>Your full report briefing is ready — referenced and sourced.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="agents" style="padding-bottom:30px">
+    <div class="sec-head reveal">
+      <span class="badge badge-teal"><svg width="13" height="13"><use href="#i-bot"/></svg> Not a chatbot</span>
+      <h2>A workspace of specialist AI agents</h2>
+      <p>Each agent has one job and does it brilliantly — orchestrated together on Azure.</p>
+    </div>
+    <div class="hero-actions reveal" style="justify-content:center">
+      <button class="btn btn-primary" onclick="enterApp()"><svg><use href="#i-bot"/></svg> Meet the Agents</button>
+    </div>
+  </section>
+
+  <section class="cta-band reveal" id="about">
+    <h2>Upload. Understand. Prepare.</h2>
+    <p>Walk into your next appointment with clarity and confidence. MediCare AI never diagnoses — it empowers.</p>
+    <button class="btn btn-white" onclick="enterApp()"><svg><use href="#i-upload"/></svg> Try the AI Workspace — Free</button>
+  </section>
+
+  <footer id="contact">
+    <div class="foot">
+      <div>
+        <a class="logo" style="font-size:16px;margin-bottom:10px"><span class="logo-mark" style="width:30px;height:30px;border-radius:9px"><svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3 12h4l2.5-7 4 14 2.5-7h5"/></svg></span> MediCare AI</a>
+        <small>⚕️ MediCare AI is an educational tool and does not provide medical diagnoses or treatment advice. Always consult a qualified healthcare professional. © 2026 MediCare AI · Built with Microsoft Azure.</small>
+      </div>
+      <div class="foot-links"><a href="#features">Features</a><a href="#how">How it works</a><a href="#" onclick="return false">Privacy</a><a href="#" onclick="return false">Terms</a><a href="mailto:hello@medicare.ai">Contact</a></div>
+    </div>
+  </footer>
+</div>
+<!-- ================= APP / WORKSPACE ================= -->
+<div id="app">
+  <aside class="sidebar" aria-label="Workspace navigation">
+    <a class="sb-logo" href="#" onclick="exitApp();return false" title="Back to landing page">
+      <span class="logo-mark"><svg fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3 12h4l2.5-7 4 14 2.5-7h5"/></svg></span>
+      MediCare&nbsp;AI
+    </a>
+    <button class="sb-item active" data-view="dashboard"><svg><use href="#i-grid"/></svg> Dashboard</button>
+    <button class="sb-item" data-view="dashboard" data-scroll="upload"><svg><use href="#i-upload"/></svg> Upload</button>
+    <button class="sb-item" data-view="history"><svg><use href="#i-clock"/></svg> History</button>
+    <button class="sb-item" data-view="agents"><svg><use href="#i-bot"/></svg> AI Agents</button>
+    <button class="sb-item" data-view="knowledge"><svg><use href="#i-book"/></svg> Knowledge Base</button>
+    <div class="sb-sep" role="separator"></div>
+    <button class="sb-item" data-view="settings"><svg><use href="#i-settings"/></svg> Settings</button>
+    <button class="sb-item" data-view="profile"><svg><use href="#i-user"/></svg> Profile</button>
+    <div class="sb-foot">
+      <div class="sb-azure">
+        <b><span class="dot pulse" style="background:var(--success)"></span> Azure Connected</b>
+        <small>East Asia · AI Foundry · all systems operational</small>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="search" role="search">
+        <svg><use href="#i-search"/></svg>
+        <input id="globalSearch" type="search" placeholder="Search reports, terms, agents…" aria-label="Search workspace">
+        <kbd>Ctrl K</kbd>
+      </div>
+      <div class="tb-right">
+        <span class="badge badge-green tb-status"><span class="dot pulse" style="background:var(--success)"></span> Azure Connected</span>
+        <button class="icon-btn" id="darkBtn" aria-label="Toggle dark mode" onclick="toggleDark()"><svg><use href="#i-moon"/></svg></button>
+        <button class="icon-btn" aria-label="Notifications" onclick="toast('3 notifications — analysis complete, weekly digest, new reference added')"><svg><use href="#i-bell"/></svg><span class="nbadge"></span></button>
+        <button class="avatar" aria-label="Profile" data-view="profile" style="cursor:pointer">KF</button>
+      </div>
+    </div>
+
+    <!-- ====== DASHBOARD VIEW ====== -->
+    <section class="view active" id="view-dashboard" aria-label="Dashboard">
+      <div class="view-head">
+        <div>
+          <h1>Good morning, Kiff 👋</h1>
+          <div class="vh-sub">Upload a medical report and your AI agent team will take it from there.</div>
+        </div>
+        <span class="badge badge-blue"><svg width="13" height="13"><use href="#i-spark"/></svg> 7 agents online</span>
+      </div>
+
+      <div class="stats">
+        <div class="card stat lift"><span class="s-ic" style="background:rgba(0,120,212,.1);color:var(--azure)"><svg><use href="#i-doc"/></svg></span><div><b>12</b><small>Reports analyzed</small></div></div>
+        <div class="card stat lift"><span class="s-ic" style="background:rgba(0,183,195,.12);color:#00838C"><svg><use href="#i-book"/></svg></span><div><b>87</b><small>Terms explained</small></div></div>
+        <div class="card stat lift"><span class="s-ic" style="background:rgba(107,91,210,.12);color:#6B5BD2"><svg><use href="#i-chat"/></svg></span><div><b>46</b><small>Questions generated</small></div></div>
+        <div class="card stat lift"><span class="s-ic" style="background:rgba(22,198,12,.12);color:var(--success-dark)"><svg><use href="#i-globe"/></svg></span><div><b>4</b><small>Languages active</small></div></div>
+      </div>
+
+      <div class="error-banner" id="uploadError" role="alert">
+        <svg><use href="#i-warn"/></svg>
+        <div><b id="uploadErrorTitle">Unsupported file type</b><span id="uploadErrorMsg">Please upload a PDF, PNG, JPEG or DOCX file (max 25 MB).</span></div>
+        <button class="btn btn-sm btn-secondary" onclick="document.getElementById('uploadError').classList.remove('show')">Dismiss</button>
+      </div>
+
+      <div id="uploadWrap">
+        <div class="upload-zone" id="uploadZone" tabindex="0" role="button"
+             aria-label="Upload medical report. Drag and drop, or press Enter to browse files.">
+          <div class="uz-icon"><svg><use href="#i-upload"/></svg></div>
+          <h3>Upload Medical Report</h3>
+          <p>Drag &amp; drop your file here, or <u>browse files</u> · Blood tests, CT, MRI, screenings &amp; summaries</p>
+          <div class="uz-formats"><span>PDF</span><span>PNG</span><span>JPEG</span><span>DOCX</span></div>
+          <div class="uz-privacy"><svg><use href="#i-shield"/></svg> Encrypted in transit &amp; at rest · processed on Microsoft Azure · never used for training</div>
+          <input type="file" id="fileInput" accept=".pdf,.png,.jpg,.jpeg,.docx" hidden>
+        </div>
+        <p style="text-align:center;margin-top:14px;font-size:13px;color:var(--text-3)">No file handy? <button class="btn-ghost" style="color:var(--azure);font-weight:600;padding:2px 6px" onclick="startDemo()">Run a live demo with a sample blood test →</button></p>
+      </div>
+
+      <!-- Processing pipeline -->
+      <div class="card pipeline" id="pipeline" aria-live="polite">
+        <div class="pl-head">
+          <div class="spinner"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="18"/><circle class="arc" cx="22" cy="22" r="18"/></svg></div>
+          <div>
+            <h3 id="plTitle">Analyzing Blood_Test_Report.pdf</h3>
+            <p id="plSub">Orchestrator is coordinating 7 AI agents <span class="thinking-dots"><i></i><i></i><i></i></span></p>
+          </div>
+          <span class="pl-pct" id="plPct">0%</span>
+        </div>
+        <div class="pl-bar"><i id="plBar"></i></div>
+        <div class="pl-steps" id="plSteps">
+          <div class="pl-step" data-step="0"><span class="ps-ic"><svg><use href="#i-upload"/></svg></span><div><b>Uploading</b><small>Secure transfer to Azure Blob Storage</small></div><span class="ps-state">Queued</span></div>
+          <div class="pl-step" data-step="1"><span class="ps-ic"><svg><use href="#i-scan"/></svg></span><div><b>Extracting Text</b><small>Azure Document Intelligence OCR</small></div><span class="ps-state">Queued</span></div>
+          <div class="pl-step" data-step="2"><span class="ps-ic"><svg><use href="#i-doc"/></svg></span><div><b>Reading Report</b><small>Report Reader agent · identifying findings &amp; values</small></div><span class="ps-state">Queued</span></div>
+          <div class="pl-step" data-step="3"><span class="ps-ic"><svg><use href="#i-spark"/></svg></span><div><b>Medical Simplifier Working</b><small>Rewriting clinical language in plain English</small></div><span class="ps-state">Queued</span></div>
+          <div class="pl-step" data-step="4"><span class="ps-ic"><svg><use href="#i-book"/></svg></span><div><b>Research Agent Working</b><small>Foundry IQ · grounding findings in WHO · NIH · MOH sources</small></div><span class="ps-state">Queued</span></div>
+          <div class="pl-step" data-step="5"><span class="ps-ic"><svg><use href="#i-net"/></svg></span><div><b>Reasoning Agent Working</b><small>Multi-step reasoning · cross-checking findings against guidelines</small></div><span class="ps-state">Queued</span></div>
+          <div class="pl-step" data-step="6"><span class="ps-ic"><svg><use href="#i-chat"/></svg></span><div><b>Question Generator Working</b><small>Creating personalized appointment questions</small></div><span class="ps-state">Queued</span></div>
+          <div class="pl-step" data-step="7"><span class="ps-ic"><svg><use href="#i-translate"/></svg></span><div><b>Translation Agent Working</b><small>Malay · Chinese · Japanese</small></div><span class="ps-state">Queued</span></div>
+          <div class="pl-step" data-step="8"><span class="ps-ic"><svg><use href="#i-check"/></svg></span><div><b>Final Summary Ready</b><small>Compiled, referenced &amp; quality-checked</small></div><span class="ps-state">Queued</span></div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="results" id="results">
+        <div class="res-banner">
+          <span class="rb-ic"><svg><use href="#i-check"/></svg></span>
+          <div><b>Analysis complete — Blood_Test_Report.pdf</b><span>9 steps · 7 agents · 16.0s · grounded via Foundry IQ in 4 trusted sources</span></div>
+          <button class="btn btn-secondary btn-sm" onclick="resetDashboard()"><svg><use href="#i-upload"/></svg> Analyze another report</button>
+        </div>
+
+        <div class="res-grid">
+          <article class="card lift rcard" style="grid-column:1/-1">
+            <div class="rc-head">
+              <span class="rc-ic" style="background:var(--grad-azure)"><svg><use href="#i-spark"/></svg></span>
+              <div><h3>Executive Summary</h3><small>Medical Simplifier · plain-English explanation</small></div>
+              <div class="rc-act"><button class="icon-btn" aria-label="Copy summary" onclick="copyText('summaryText')"><svg><use href="#i-copy"/></svg></button></div>
+            </div>
+            <p class="body" id="summaryText">Overall, your blood test looks <b>mostly healthy</b>. Your blood sugar control and kidney function are well within normal ranges. Two areas deserve attention: your <b>hemoglobin is slightly low</b>, which can mean your body has less iron than it would like — this often explains tiredness — and your <b>LDL ("bad") cholesterol is mildly elevated</b>, something usually improved with diet and exercise. Neither finding is an emergency, but both are worth discussing with your doctor at your next visit.</p>
+          </article>
+
+          <article class="card lift rcard" style="grid-column:1/-1" id="traceCard">
+            <div class="rc-head">
+              <span class="rc-ic" style="background:linear-gradient(135deg,#5E4FC2,#00B7C3)"><svg><use href="#i-net"/></svg></span>
+              <div><h3>Reasoning Trace</h3><small>Reasoning Agent · how this conclusion was reached, step by step</small></div>
+              <span class="badge badge-teal" style="margin-left:auto">Foundry IQ grounded</span>
+            </div>
+            <div class="finding"><span class="fi-ic" style="background:rgba(0,120,212,.1);color:var(--azure)"><b style="font-size:13px">1</b></span><div><b>Observe</b><small>Hemoglobin 11.2 g/dL sits below the 13.0–17.0 reference range; MCV is also low → red cells are smaller than normal (microcytic).</small></div></div>
+            <div class="finding"><span class="fi-ic" style="background:rgba(0,120,212,.1);color:var(--azure)"><b style="font-size:13px">2</b></span><div><b>Hypothesize</b><small>Low Hb + microcytic cells → iron deficiency is the most likely pattern. B12/folate deficiency is unlikely — that usually makes cells larger, not smaller.</small></div></div>
+            <div class="finding"><span class="fi-ic" style="background:rgba(0,183,195,.12);color:#00838C"><b style="font-size:13px">3</b></span><div><b>Retrieve — Foundry IQ</b><small>Queried grounded knowledge sources: WHO anaemia thresholds confirm 11.2 g/dL classifies as "mild" (11.0–12.9). Citation attached to the summary.</small></div></div>
+            <div class="finding"><span class="fi-ic" style="background:rgba(0,120,212,.1);color:var(--azure)"><b style="font-size:13px">4</b></span><div><b>Cross-check</b><small>eGFR 96 is normal → kidney-related anemia pathway ruled out. HbA1c normal → no diabetes interaction to consider.</small></div></div>
+            <div class="finding"><span class="fi-ic" style="background:rgba(22,198,12,.12);color:var(--success-dark)"><b style="font-size:13px">5</b></span><div><b>Conclude</b><small>Pattern is consistent with mild iron deficiency — not urgent, worth confirming. Generated the ferritin-test question and routed all wording through the Safety Reviewer (no diagnostic claims).</small></div></div>
+          </article>
+          <article class="card lift rcard" id="findingsCard">
+            <div class="rc-head">
+              <span class="rc-ic" style="background:linear-gradient(135deg,#D13438,#FF7A45)"><svg><use href="#i-pulse"/></svg></span>
+              <div><h3>Medical Findings</h3><small>Report Reader · 4 key values flagged</small></div>
+            </div>
+            <div class="finding"><span class="fi-ic" style="background:rgba(255,185,0,.15);color:var(--warning-dark)"><svg><use href="#i-drop"/></svg></span><div><b>Hemoglobin — 11.2 g/dL <span class="badge badge-amber" style="padding:2px 9px;font-size:10.5px">Slightly low</span></b><small>Below the typical range (13.0–17.0). May indicate mild iron-deficiency anemia.</small></div></div>
+            <div class="finding"><span class="fi-ic" style="background:rgba(255,185,0,.15);color:var(--warning-dark)"><svg><use href="#i-heart"/></svg></span><div><b>LDL Cholesterol — 3.9 mmol/L <span class="badge badge-amber" style="padding:2px 9px;font-size:10.5px">Mildly elevated</span></b><small>Above the recommended &lt;3.4. Often managed with lifestyle changes first.</small></div></div>
+            <div class="finding"><span class="fi-ic" style="background:rgba(22,198,12,.12);color:var(--success-dark)"><svg><use href="#i-flask"/></svg></span><div><b>HbA1c — 5.4% <span class="badge badge-green" style="padding:2px 9px;font-size:10.5px">Normal</span></b><small>Excellent 3-month blood sugar control. No sign of diabetes.</small></div></div>
+            <div class="finding"><span class="fi-ic" style="background:rgba(22,198,12,.12);color:var(--success-dark)"><svg><use href="#i-kidney"/></svg></span><div><b>eGFR — 96 mL/min <span class="badge badge-green" style="padding:2px 9px;font-size:10.5px">Normal</span></b><small>Your kidneys are filtering blood at a healthy rate.</small></div></div>
+          </article>
+
+          <article class="card lift rcard">
+            <div class="rc-head">
+              <span class="rc-ic" style="background:linear-gradient(135deg,#6B5BD2,#4CC2FF)"><svg><use href="#i-book"/></svg></span>
+              <div><h3>Medical Terms</h3><small>Medical Dictionary · tap a term to expand</small></div>
+            </div>
+            <div class="term-chips" id="termChips" role="list"></div>
+            <div class="term-detail" id="termDetail" aria-live="polite"></div>
+          </article>
+
+          <article class="card lift rcard" style="grid-column:1/-1" id="bodyCard">
+            <div class="rc-head">
+              <span class="rc-ic" style="background:linear-gradient(135deg,#0078D4,#16C60C)"><svg><use href="#i-user"/></svg></span>
+              <div><h3>Body Map</h3><small>Where this report's findings live — tap an organ</small></div>
+            </div>
+            <div class="bm-wrap">
+              <div class="bm-svg" aria-hidden="true">
+                <svg viewBox="0 0 200 400">
+                  <circle class="bm-body" cx="100" cy="40" r="27"/>
+                  <rect class="bm-body" x="62" y="74" width="76" height="148" rx="34"/>
+                  <rect class="bm-body" x="34" y="84" width="22" height="112" rx="11"/>
+                  <rect class="bm-body" x="144" y="84" width="22" height="112" rx="11"/>
+                  <rect class="bm-body" x="70" y="226" width="26" height="120" rx="13"/>
+                  <rect class="bm-body" x="104" y="226" width="26" height="120" rx="13"/>
+                  <g class="bm-organ" data-bm="brain"><circle class="halo" cx="100" cy="38" r="11" fill="rgba(22,198,12,.3)"/><ellipse class="core" cx="100" cy="38" rx="13" ry="10" fill="#16C60C"/></g>
+                  <g class="bm-organ" data-bm="heart"><circle class="halo" cx="104" cy="118" r="11" fill="rgba(255,185,0,.35)"/><circle class="core" cx="104" cy="118" r="10" fill="#FFB900"/></g>
+                  <g class="bm-organ" data-bm="blood"><circle class="halo" cx="100" cy="168" r="11" fill="rgba(255,185,0,.35)"/><path class="core" d="M100 158c5 6.5 8 10 8 14a8 8 0 0 1-16 0c0-4 3-7.5 8-14z" fill="#FFB900"/></g>
+                  <g class="bm-organ" data-bm="kidneys"><circle class="halo" cx="100" cy="198" r="11" fill="rgba(22,198,12,.3)"/><ellipse class="core" cx="88" cy="198" rx="7" ry="9" fill="#16C60C"/><ellipse class="core" cx="112" cy="198" rx="7" ry="9" fill="#16C60C"/></g>
+                </svg>
+              </div>
+              <div class="bm-list" id="bmList" role="list"></div>
+            </div>
+          </article>
+          <article class="card lift rcard">
+            <div class="rc-head">
+              <span class="rc-ic" style="background:linear-gradient(135deg,#0078D4,#6B5BD2)"><svg><use href="#i-chat"/></svg></span>
+              <div><h3>Doctor Questions</h3><small>Question Generator · bring these to your visit</small></div>
+              <div class="rc-act"><button class="icon-btn" aria-label="Copy all questions" onclick="copyQuestions()"><svg><use href="#i-copy"/></svg></button></div>
+            </div>
+            <div id="qList"></div>
+          </article>
+
+          <article class="card lift rcard">
+            <div class="rc-head">
+              <span class="rc-ic" style="background:linear-gradient(135deg,#00B7C3,#0078D4)"><svg><use href="#i-translate"/></svg></span>
+              <div><h3>Translation</h3><small>Translation Agent · Azure AI Translator</small></div>
+              <div class="rc-act"><button class="icon-btn" id="listenBtn" aria-label="Read summary aloud" title="Listen" onclick="speakSummary()"><svg><use href="#i-speaker"/></svg></button></div>
+            </div>
+            <div class="tabs" role="tablist" id="langTabs">
+              <button class="tab active" role="tab" aria-selected="true" data-lang="en">English</button>
+              <button class="tab" role="tab" aria-selected="false" data-lang="ms">Melayu</button>
+              <button class="tab" role="tab" aria-selected="false" data-lang="zh">中文</button>
+              <button class="tab" role="tab" aria-selected="false" data-lang="ja">日本語</button>
+            </div>
+            <p class="trans-body" id="transBody" lang="en"></p>
+          </article>
+
+          <article class="card lift rcard" style="grid-column:1/-1">
+            <div class="rc-head">
+              <span class="rc-ic" style="background:linear-gradient(135deg,#107C10,#00B7C3)"><svg><use href="#i-shield"/></svg></span>
+              <div><h3>Trusted References</h3><small id="refsSub">Research Agent · retrieved via Foundry IQ with citations</small></div>
+            </div>
+            <div id="refsGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px">
+              <a class="refitem" href="#" onclick="toast('Opens WHO anaemia guideline (demo)');return false"><span class="ref-ic" style="background:#0B5394">WHO</span><div><b>Anaemia in adults — overview</b><small>World Health Organization · Fact sheet</small></div><div class="conf"><b>97%</b><div class="conf-bar"><i style="width:97%"></i></div></div></a>
+              <a class="refitem" href="#" onclick="toast('Opens NIH cholesterol guide (demo)');return false"><span class="ref-ic" style="background:#1F6B2E">NIH</span><div><b>Blood cholesterol: what it means</b><small>National Institutes of Health · MedlinePlus</small></div><div class="conf"><b>95%</b><div class="conf-bar"><i style="width:95%"></i></div></div></a>
+              <a class="refitem" href="#" onclick="toast('Opens MOH screening guideline (demo)');return false"><span class="ref-ic" style="background:#8F1D7B">MOH</span><div><b>Health screening guidelines 2025</b><small>Ministry of Health · Clinical guideline</small></div><div class="conf"><b>93%</b><div class="conf-bar"><i style="width:93%"></i></div></div></a>
+              <a class="refitem" href="#" onclick="toast('Opens journal article (demo)');return false"><span class="ref-ic" style="background:#5E4FC2">DOI</span><div><b>Iron deficiency without anaemia</b><small>The Lancet · Peer-reviewed journal, 2024</small></div><div class="conf"><b>89%</b><div class="conf-bar"><i style="width:89%"></i></div></div></a>
+            </div>
+          </article>
+        </div>
+
+        <div class="disclaimer">
+          <svg><use href="#i-warn"/></svg>
+          <div><b>MediCare AI does not diagnose disease.</b> These explanations are educational and generated by AI — they may contain errors and are not a substitute for professional medical advice. Always discuss your results with a qualified healthcare professional.</div>
+        </div>
+      </div>
+    </section>
+    <!-- ====== AGENTS VIEW ====== -->
+    <section class="view" id="view-agents" aria-label="AI Agents">
+      <div class="view-head">
+        <div><h1>AI Agents</h1><div class="vh-sub">Your specialist agent team, orchestrated live on Azure AI Foundry.</div></div>
+        <span class="badge badge-green"><span class="dot pulse" style="background:var(--success)"></span> Live collaboration</span>
+      </div>
+      <div class="agents-grid" id="agentsGrid">
+        <svg id="agentWires" aria-hidden="true"></svg>
+        <article class="card lift agent-card orch">
+          <div class="ag-top">
+            <span class="ag-av" style="background:rgba(255,255,255,.16);box-shadow:none"><svg><use href="#i-net"/></svg><span class="ag-live"></span></span>
+            <div><h3>Orchestrator</h3><small style="color:rgba(255,255,255,.6)">Semantic Kernel · GPT-4o</small></div>
+            <span class="badge" style="margin-left:auto;background:rgba(94,224,138,.18);color:#7CF0A8"><span class="dot pulse" style="background:#5EE08A"></span> Online</span>
+          </div>
+          <p class="ag-task">Managing all AI agents — routing the document, sequencing specialists, merging results and running safety &amp; quality checks before anything reaches you.</p>
+          <div class="ag-prog"><i style="width:100%"></i></div>
+          <div class="ag-meta"><span>6 agents supervised</span><span>Uptime 99.99%</span></div>
+          <div class="ag-pulseline"></div>
+        </article>
+
+        <article class="card lift agent-card">
+          <div class="ag-top"><span class="ag-av" style="background:var(--azure)"><svg><use href="#i-scan"/></svg><span class="ag-live"></span></span><div><h3>Report Reader</h3><small>Azure Document Intelligence</small></div></div>
+          <p class="ag-task">Reading the uploaded document — extracting values, tables, units and reference ranges.</p>
+          <span class="badge badge-blue" style="margin-bottom:14px"><span class="thinking-dots"><i></i><i></i><i></i></span> Working</span>
+          <div class="ag-prog"><i class="ag-w" style="width:78%"></i></div>
+          <div class="ag-meta"><span>Page 2 of 2</span><span>78%</span></div>
+          <div class="ag-pulseline"></div>
+        </article>
+
+        <article class="card lift agent-card">
+          <div class="ag-top"><span class="ag-av" style="background:var(--accent)"><svg><use href="#i-spark"/></svg><span class="ag-live"></span></span><div><h3>Medical Simplifier</h3><small>Azure OpenAI · fine-tuned</small></div></div>
+          <p class="ag-task">Converting medical language into clear, warm, patient-friendly explanations.</p>
+          <span class="badge badge-blue" style="margin-bottom:14px"><span class="thinking-dots"><i></i><i></i><i></i></span> Working</span>
+          <div class="ag-prog"><i class="ag-w" style="width:64%"></i></div>
+          <div class="ag-meta"><span>11 terms simplified</span><span>64%</span></div>
+          <div class="ag-pulseline"></div>
+        </article>
+
+        <article class="card lift agent-card">
+          <div class="ag-top"><span class="ag-av" style="background:#0B6F86"><svg><use href="#i-book"/></svg><span class="ag-live"></span></span><div><h3>Research Agent</h3><small>Foundry IQ · agentic retrieval</small></div></div>
+          <p class="ag-task">Searching trusted references — WHO, NIH, MOH and peer-reviewed journals.</p>
+          <span class="badge badge-blue" style="margin-bottom:14px"><span class="thinking-dots"><i></i><i></i><i></i></span> Working</span>
+          <div class="ag-prog"><i class="ag-w" style="width:52%"></i></div>
+          <div class="ag-meta"><span>4 sources verified</span><span>52%</span></div>
+          <div class="ag-pulseline"></div>
+        </article>
+
+        <article class="card lift agent-card">
+          <div class="ag-top"><span class="ag-av" style="background:#5E4FC2"><svg><use href="#i-net"/></svg><span class="ag-live"></span></span><div><h3>Reasoning Agent</h3><small>Azure OpenAI o-series · Foundry Agent Service</small></div></div>
+          <p class="ag-task">Multi-step clinical reasoning — chaining findings, ruling out alternatives and cross-checking guidelines before any conclusion.</p>
+          <span class="badge badge-blue" style="margin-bottom:14px"><span class="thinking-dots"><i></i><i></i><i></i></span> Working</span>
+          <div class="ag-prog"><i class="ag-w" style="width:58%"></i></div>
+          <div class="ag-meta"><span>Step 3 of 5 · verifying</span><span>58%</span></div>
+          <div class="ag-pulseline"></div>
+        </article>
+        <article class="card lift agent-card">
+          <div class="ag-top"><span class="ag-av" style="background:#6B5BD2"><svg><use href="#i-chat"/></svg><span class="ag-live"></span></span><div><h3>Question Generator</h3><small>Azure OpenAI · reasoning</small></div></div>
+          <p class="ag-task">Creating appointment questions personalized to this report's findings.</p>
+          <span class="badge badge-blue" style="margin-bottom:14px"><span class="thinking-dots"><i></i><i></i><i></i></span> Working</span>
+          <div class="ag-prog"><i class="ag-w" style="width:41%"></i></div>
+          <div class="ag-meta"><span>3 of 5 questions</span><span>41%</span></div>
+          <div class="ag-pulseline"></div>
+        </article>
+
+        <article class="card lift agent-card">
+          <div class="ag-top"><span class="ag-av" style="background:#C2497B"><svg><use href="#i-translate"/></svg><span class="ag-live"></span></span><div><h3>Translation Agent</h3><small>Azure AI Translator</small></div></div>
+          <p class="ag-task">Translating content into Bahasa Melayu, Chinese and Japanese with medical accuracy.</p>
+          <span class="badge badge-blue" style="margin-bottom:14px"><span class="thinking-dots"><i></i><i></i><i></i></span> Working</span>
+          <div class="ag-prog"><i class="ag-w" style="width:33%"></i></div>
+          <div class="ag-meta"><span>MY done · 中文 in progress</span><span>33%</span></div>
+          <div class="ag-pulseline"></div>
+        </article>
+
+        <article class="card lift agent-card">
+          <div class="ag-top"><span class="ag-av" style="background:#107C10"><svg><use href="#i-shield"/></svg><span class="ag-live"></span></span><div><h3>Safety Reviewer</h3><small>Azure AI Content Safety</small></div></div>
+          <p class="ag-task">Checking every output for diagnostic language — explanations only, never diagnoses.</p>
+          <span class="badge badge-green" style="margin-bottom:14px"><span class="dot" style="background:var(--success)"></span> Standing by</span>
+          <div class="ag-prog"><i style="width:100%;background:linear-gradient(90deg,#16C60C,#00B7C3)"></i></div>
+          <div class="ag-meta"><span>0 violations found</span><span>Ready</span></div>
+          <div class="ag-pulseline"></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ====== HISTORY VIEW ====== -->
+    <section class="view" id="view-history" aria-label="History">
+      <div class="view-head">
+        <div><h1>History</h1><div class="vh-sub">Every report you've analyzed, in one timeline.</div></div>
+        <button class="btn btn-secondary btn-sm" onclick="toast('Exported history as CSV (demo)')"><svg><use href="#i-download"/></svg> Export all</button>
+      </div>
+      <div class="filter-row">
+        <div class="search"><svg><use href="#i-search"/></svg><input id="histSearch" type="search" placeholder="Search documents…" aria-label="Search history"></div>
+        <label class="select"><svg width="15" height="15" style="color:var(--text-3)"><use href="#i-doc"/></svg>
+          <select id="histType" aria-label="Filter by document type"><option value="">All types</option><option>Blood Test</option><option>MRI</option><option>CT Scan</option><option>Screening</option><option>Summary</option></select>
+        </label>
+        <label class="select"><svg width="15" height="15" style="color:var(--text-3)"><use href="#i-check"/></svg>
+          <select id="histStatus" aria-label="Filter by status"><option value="">All statuses</option><option>Completed</option><option>Processing</option><option>Failed</option></select>
+        </label>
+      </div>
+      <div class="hist-list" id="histList"></div>
+      <div class="empty" id="histEmpty">
+        <div class="em-ic"><svg><use href="#i-search"/></svg></div>
+        <h3>No results found</h3>
+        <p>Nothing matches your search or filters. Try a different keyword or clear the filters.</p>
+        <button class="btn btn-secondary btn-sm" onclick="clearHistFilters()">Clear filters</button>
+      </div>
+    </section>
+
+    <!-- ====== KNOWLEDGE VIEW ====== -->
+    <section class="view" id="view-knowledge" aria-label="Knowledge Base">
+      <div class="view-head">
+        <div><h1>Knowledge Base</h1><div class="vh-sub">Plain-language medical topics, explained by AI and grounded in trusted sources.</div></div>
+      </div>
+      <div class="kb-grid" id="kbGrid"></div>
+    </section>
+
+    <!-- ====== PROFILE VIEW ====== -->
+    <section class="view" id="view-profile" aria-label="Profile">
+      <div class="view-head"><div><h1>Profile</h1><div class="vh-sub">Your account, activity and preferences.</div></div></div>
+      <div class="profile-grid">
+        <div class="card profile-card">
+          <div class="avatar">KF</div>
+          <h2>Kiff</h2>
+          <div class="p-mail">kiff@example.com</div>
+          <span class="badge badge-blue"><svg width="13" height="13"><use href="#i-shield"/></svg> Privacy-first account</span>
+          <div class="p-stats">
+            <div><b>12</b><small>Reports</small></div>
+            <div><b>46</b><small>Questions</small></div>
+            <div><b>4</b><small>Languages</small></div>
+          </div>
+        </div>
+        <div>
+          <div class="card set-group">
+            <h3>Recent uploads</h3>
+            <div class="set-row"><svg width="18" height="18" style="color:var(--azure)"><use href="#i-doc"/></svg><div><b>Blood_Test_Report.pdf</b><small>Analyzed today · 4 findings</small></div><button class="btn btn-sm btn-secondary set-ctl" data-view="dashboard">View</button></div>
+            <div class="set-row"><svg width="18" height="18" style="color:#6B5BD2"><use href="#i-brain"/></svg><div><b>MRI_Brain_Summary.pdf</b><small>May 28 · 2 findings</small></div><button class="btn btn-sm btn-secondary set-ctl" onclick="toast('Opening archived analysis (demo)')">View</button></div>
+            <div class="set-row"><svg width="18" height="18" style="color:#00838C"><use href="#i-pulse"/></svg><div><b>Annual_Screening_2026.docx</b><small>May 12 · all normal</small></div><button class="btn btn-sm btn-secondary set-ctl" onclick="toast('Opening archived analysis (demo)')">View</button></div>
+          </div>
+          <div class="card set-group">
+            <h3>Preferences</h3>
+            <div class="set-row"><div><b>Default language</b><small>Used for summaries and translations</small></div>
+              <label class="select set-ctl"><select aria-label="Default language"><option>English</option><option>Bahasa Melayu</option><option>中文</option><option>日本語</option></select></label></div>
+            <div class="set-row"><div><b>Notifications</b><small>Email me when an analysis completes</small></div>
+              <button class="toggle set-ctl" role="switch" aria-checked="true" aria-label="Toggle notifications" onclick="flipToggle(this)"></button></div>
+            <div class="set-row"><div><b>Larger text &amp; high contrast</b><small>Accessibility display mode</small></div>
+              <button class="toggle set-ctl" role="switch" aria-checked="false" aria-label="Toggle accessibility mode" onclick="flipToggle(this)"></button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== SETTINGS VIEW ====== -->
+    <section class="view" id="view-settings" aria-label="Settings">
+      <div class="view-head"><div><h1>Settings</h1><div class="vh-sub">Workspace, security and data controls.</div></div></div>
+      <div style="max-width:760px">
+        <div class="card set-group">
+          <h3>Appearance</h3>
+          <div class="set-row"><div><b>Dark mode</b><small>Switch the workspace to a dark theme</small></div>
+            <button class="toggle set-ctl" id="darkToggle" role="switch" aria-checked="false" aria-label="Toggle dark mode" onclick="toggleDark()"></button></div>
+          <div class="set-row"><div><b>Reduced motion</b><small>Minimize animations across the workspace</small></div>
+            <button class="toggle set-ctl" role="switch" aria-checked="false" aria-label="Toggle reduced motion" onclick="flipToggle(this)"></button></div>
+        </div>
+        <div class="card set-group">
+          <h3>Security &amp; privacy</h3>
+          <div class="set-row"><div><b>Two-factor authentication</b><small>Protect your account with Microsoft Authenticator</small></div>
+            <button class="toggle set-ctl" role="switch" aria-checked="true" aria-label="Toggle two-factor authentication" onclick="flipToggle(this)"></button></div>
+          <div class="set-row"><div><b>Auto-delete documents</b><small>Remove uploads from Azure storage after 30 days</small></div>
+            <button class="toggle set-ctl" role="switch" aria-checked="true" aria-label="Toggle auto delete" onclick="flipToggle(this)"></button></div>
+          <div class="set-row"><div><b>Download my data</b><small>Export all analyses and uploads</small></div>
+            <button class="btn btn-sm btn-secondary set-ctl" onclick="toast('Preparing your data export (demo)')"><svg><use href="#i-download"/></svg> Export</button></div>
+          <div class="set-row"><div><b style="color:var(--error)">Delete all data</b><small>Permanently erase your documents and history</small></div>
+            <button class="btn btn-sm btn-secondary set-ctl" style="color:var(--error);border-color:#F0C6C8" onclick="toast('Deletion requires email confirmation (demo)')"><svg><use href="#i-trash"/></svg> Delete</button></div>
+        </div>
+        <div class="card set-group">
+          <h3>Azure connection</h3>
+          <div class="set-row"><div><b>Region</b><small>Where your documents are processed</small></div>
+            <label class="select set-ctl"><select aria-label="Azure region"><option>East Asia</option><option>Southeast Asia</option><option>West Europe</option><option>East US</option></select></label></div>
+          <div class="set-row"><div><b>Service health</b><small>Document Intelligence · OpenAI · Translator · AI Search</small></div>
+            <span class="badge badge-green set-ctl"><span class="dot pulse" style="background:var(--success)"></span> All operational</span></div>
+          <div class="set-row"><div><b>Error state preview</b><small>QA tool — preview the elegant error components</small></div>
+            <div class="set-ctl" style="display:flex;gap:6px;flex-wrap:wrap">
+              <button class="btn btn-sm btn-secondary" onclick="previewError('upload')">Upload failed</button>
+              <button class="btn btn-sm btn-secondary" onclick="previewError('network')">Network error</button>
+              <button class="btn btn-sm btn-secondary" onclick="previewError('azure')">Azure unavailable</button>
+            </div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <nav class="mobile-tabs" aria-label="Mobile navigation">
+    <button class="active" data-view="dashboard"><svg><use href="#i-grid"/></svg>Home</button>
+    <button data-view="history"><svg><use href="#i-clock"/></svg>History</button>
+    <button data-view="agents"><svg><use href="#i-bot"/></svg>Agents</button>
+    <button data-view="knowledge"><svg><use href="#i-book"/></svg>Learn</button>
+    <button data-view="profile"><svg><use href="#i-user"/></svg>Profile</button>
+  </nav>
+</div>
+<!-- ================= OVERLAYS ================= -->
+<div id="toasts" aria-live="polite"></div>
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h3 id="modalTitle"></h3>
+    <div class="m-sub" id="modalSub"></div>
+    <p class="m-body" id="modalBody"></p>
+    <div class="m-actions">
+      <button class="btn btn-secondary btn-sm" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============ helpers ============ */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+
+function toast(msg){
+  const t=document.createElement('div');t.className='toast';
+  t.innerHTML='<svg><use href="#i-check"/></svg><span></span>';
+  t.querySelector('span').textContent=msg;
+  $('#toasts').appendChild(t);
+  setTimeout(()=>{t.classList.add('out');setTimeout(()=>t.remove(),320)},3200);
+}
+function copyText(id){
+  const el=document.getElementById(id);
+  navigator.clipboard?.writeText(el.innerText).then(()=>toast('Copied to clipboard'),()=>toast('Copy not available in this preview'));
+}
+function flipToggle(t){t.setAttribute('aria-checked',t.getAttribute('aria-checked')==='true'?'false':'true')}
+
+/* ripple */
+document.addEventListener('click',e=>{
+  const b=e.target.closest('.btn');if(!b)return;
+  const r=b.getBoundingClientRect(),s=Math.max(r.width,r.height);
+  const i=document.createElement('span');i.className='ripple';
+  i.style.cssText=`width:${s}px;height:${s}px;left:${e.clientX-r.left-s/2}px;top:${e.clientY-r.top-s/2}px`;
+  b.appendChild(i);setTimeout(()=>i.remove(),560);
+});
+
+/* ============ landing ============ */
+const navbar=$('#navbar');
+addEventListener('scroll',()=>navbar&&navbar.classList.toggle('scrolled',scrollY>14),{passive:true});
+const io='IntersectionObserver'in window?new IntersectionObserver(es=>es.forEach(x=>x.isIntersecting&&x.target.classList.add('visible')),{threshold:.12}):null;
+$$('.reveal').forEach(el=>io?io.observe(el):el.classList.add('visible'));
+
+function enterApp(demo){
+  document.body.classList.add('in-app');
+  scrollTo(0,0);
+  if(demo)setTimeout(startDemo,600);
+}
+function exitApp(){document.body.classList.remove('in-app');scrollTo(0,0)}
+
+/* ============ view switching ============ */
+function showView(name){
+  $$('.view').forEach(v=>v.classList.remove('active'));
+  $('#view-'+name)?.classList.add('active');
+  $$('.sb-item,[data-view]').forEach(b=>{
+    if(b.dataset.view) b.classList.toggle('active',b.dataset.view===name&&!b.dataset.scroll);
+  });
+  $$('.mobile-tabs button').forEach(b=>b.classList.toggle('active',b.dataset.view===name));
+  if(name==='agents')requestAnimationFrame(drawWires);
+  scrollTo({top:0,behavior:'smooth'});
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-view]');if(!b)return;
+  showView(b.dataset.view);
+  if(b.dataset.scroll==='upload')setTimeout(()=>$('#uploadZone')?.scrollIntoView({behavior:'smooth',block:'center'}),120);
+});
+addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();$('#globalSearch')?.focus()}
+  if(e.key==='Escape')closeModal();
+});
+
+/* ============ upload & pipeline ============ */
+const zone=$('#uploadZone'),fileInput=$('#fileInput');
+const OK=['pdf','png','jpg','jpeg','docx'];
+zone.addEventListener('click',()=>fileInput.click());
+zone.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fileInput.click()}});
+['dragover','dragenter'].forEach(ev=>zone.addEventListener(ev,e=>{e.preventDefault();zone.classList.add('drag')}));
+['dragleave','drop'].forEach(ev=>zone.addEventListener(ev,e=>{e.preventDefault();zone.classList.remove('drag')}));
+zone.addEventListener('drop',e=>handleFile(e.dataTransfer.files[0]));
+fileInput.addEventListener('change',()=>handleFile(fileInput.files[0]));
+
+function handleFile(f){
+  if(!f)return;
+  const ext=f.name.split('.').pop().toLowerCase();
+  const err=$('#uploadError');
+  if(!OK.includes(ext)){
+    $('#uploadErrorTitle').textContent='Unsupported file type';
+    $('#uploadErrorMsg').textContent=`"${f.name}" isn't supported. Please upload a PDF, PNG, JPEG or DOCX file (max 25 MB).`;
+    err.classList.add('show');return;
+  }
+  if(f.size>25*1024*1024){
+    $('#uploadErrorTitle').textContent='File too large';
+    $('#uploadErrorMsg').textContent=`"${f.name}" is larger than 25 MB. Try compressing it first.`;
+    err.classList.add('show');return;
+  }
+  err.classList.remove('show');
+  startProcessing(f.name);
+}
+function startDemo(){showView('dashboard');startProcessing('Blood_Test_Report.pdf')}
+
+function previewError(kind){
+  const map={
+    upload:['Upload failed','Something went wrong while uploading your document. Please try again.'],
+    network:['Network error','We couldn’t reach the server. Check your connection and retry — nothing was lost.'],
+    azure:['Azure service unavailable','Azure AI services are temporarily unreachable. Your document is safe and we’ll retry automatically.']
+  };
+  const[t,m]=map[kind];
+  showView('dashboard');
+  $('#uploadErrorTitle').textContent=t;
+  $('#uploadErrorMsg').textContent=m;
+  $('#uploadError').classList.add('show');
+  setTimeout(()=>$('#uploadError').scrollIntoView({behavior:'smooth',block:'center'}),150);
+}
+
+const STEP_STATES=['Uploading','Extracting','Reading','Simplifying','Researching','Generating','Translating','Finalizing'];
+let plTimer=null;
+function startProcessing(name){
+  clearTimeout(plTimer);
+  $('#uploadWrap').style.display='none';
+  $('#results').classList.remove('show');
+  const pl=$('#pipeline');pl.classList.add('show');
+  $('#plTitle').textContent='Analyzing '+name;
+  const steps=$$('#plSteps .pl-step');
+  steps.forEach(s=>{s.className='pl-step';s.querySelector('.ps-state').textContent='Queued'});
+  $('#plBar').style.width='0%';$('#plPct').textContent='0%';
+  pl.scrollIntoView({behavior:'smooth',block:'start'});
+  const durations=[1100,1500,1600,1900,1700,1800,1500,1600,900];
+  let i=0;
+  (function next(){
+    if(i>0){steps[i-1].classList.remove('working');steps[i-1].classList.add('done');steps[i-1].querySelector('.ps-state').textContent='Done ✓'}
+    const pct=Math.round(i/steps.length*100);
+    $('#plBar').style.width=pct+'%';$('#plPct').textContent=pct+'%';
+    if(i>=steps.length){
+      $('#plSub').innerHTML='All agents finished · compiling your briefing';
+      plTimer=setTimeout(()=>{
+        pl.classList.remove('show');
+        $('#results').classList.add('show');
+        toast('Analysis complete — 7 agents finished in 16.0s');
+        $('#results').scrollIntoView({behavior:'smooth',block:'start'});
+      },700);
+      return;
+    }
+    steps[i].classList.add('working');
+    steps[i].querySelector('.ps-state').innerHTML='<span class="thinking-dots"><i></i><i></i><i></i></span>';
+    i++;plTimer=setTimeout(next,durations[i-1]);
+  })();
+}
+function resetDashboard(){
+  $('#results').classList.remove('show');
+  $('#uploadWrap').style.display='';
+  fileInput.value='';
+  $('#uploadZone').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+/* ============ terms ============ */
+const TERMS=[
+  ['Hemoglobin','The protein in red blood cells that carries oxygen around your body. Low levels can leave you feeling tired or short of breath, and are often linked to <b>low iron</b>.'],
+  ['LDL Cholesterol','Often called <b>"bad" cholesterol</b>. Too much can slowly build up in blood vessel walls. Usually improved first with diet, exercise and weight management.'],
+  ['HbA1c','A measure of your <b>average blood sugar over ~3 months</b>. It\'s how doctors screen for and monitor diabetes. Yours is in the healthy range.'],
+  ['eGFR','Estimated Glomerular Filtration Rate — a calculation of <b>how well your kidneys filter blood</b>. Above 90 is considered normal for most adults.'],
+  ['Microcytic','Means red blood cells are <b>smaller than usual</b>. The most common cause is iron deficiency.'],
+  ['Ferritin','A protein that <b>stores iron</b>. Checking it helps confirm whether low hemoglobin is caused by low iron.'],
+  ['Lipid Panel','A group of tests measuring <b>fats in your blood</b> — total cholesterol, LDL, HDL and triglycerides.']
+];
+const chipsEl=$('#termChips'),detailEl=$('#termDetail');
+TERMS.forEach(([t,d],idx)=>{
+  const c=document.createElement('button');
+  c.className='term-chip';c.textContent=t;c.setAttribute('aria-expanded','false');c.setAttribute('role','listitem');
+  c.onclick=()=>{
+    const open=c.getAttribute('aria-expanded')==='true';
+    $$('.term-chip').forEach(x=>x.setAttribute('aria-expanded','false'));
+    if(open){detailEl.classList.remove('show');return}
+    c.setAttribute('aria-expanded','true');
+    detailEl.innerHTML='<b>'+t+'</b> — '+d;
+    detailEl.classList.add('show');
+  };
+  chipsEl.appendChild(c);
+});
+
+/* ============ questions ============ */
+const QUESTIONS=[
+  'My hemoglobin is slightly low — should I get an iron or ferritin test to find the cause?',
+  'Are there foods or supplements you\'d recommend to bring my iron levels up?',
+  'My LDL cholesterol is mildly elevated. Should we try lifestyle changes first, or discuss medication?',
+  'When should I repeat these blood tests to see if things are improving?',
+  'Could any of these results explain the tiredness I\'ve been feeling lately?'
+];
+const qList=$('#qList');
+QUESTIONS.forEach((q,i)=>{
+  const d=document.createElement('div');d.className='qitem';
+  d.innerHTML=`<input type="checkbox" id="q${i}"><label for="q${i}">${q}</label>`;
+  d.querySelector('input').addEventListener('change',e=>d.classList.toggle('checked',e.target.checked));
+  qList.appendChild(d);
+});
+function copyQuestions(){
+  navigator.clipboard?.writeText(QUESTIONS.map((q,i)=>(i+1)+'. '+q).join('\n'))
+    .then(()=>toast('5 questions copied — ready for your appointment'),()=>toast('Copy not available in this preview'));
+}
+
+/* ============ translation ============ */
+const TRANSLATIONS={
+  en:'Overall, your blood test looks mostly healthy. Your hemoglobin is slightly low, which may mean low iron — this often explains tiredness. Your LDL ("bad") cholesterol is mildly elevated and usually improves with diet and exercise. Your blood sugar and kidney function are excellent.',
+  ms:'Secara keseluruhan, ujian darah anda kelihatan sihat. Hemoglobin anda sedikit rendah, yang mungkin bermaksud kekurangan zat besi — ini sering menjelaskan keletihan. Kolesterol LDL ("jahat") anda meningkat sedikit dan biasanya bertambah baik dengan diet dan senaman. Gula darah dan fungsi buah pinggang anda sangat baik.',
+  zh:'总体而言，您的血液检查结果基本健康。您的血红蛋白略低，可能意味着缺铁——这通常可以解释疲劳感。您的低密度脂蛋白（"坏"）胆固醇轻度偏高，通常通过饮食和运动即可改善。您的血糖和肾功能都非常好。',
+  ja:'全体的に、血液検査の結果はおおむね健康です。ヘモグロビンがやや低く、鉄分不足の可能性があります。これは疲労感の原因になることがあります。LDL（悪玉）コレステロールが軽度に高めですが、通常は食事と運動で改善します。血糖値と腎機能は非常に良好です。'
+};
+$('#transBody').textContent=TRANSLATIONS.en;
+$('#langTabs').addEventListener('click',e=>{
+  const t=e.target.closest('.tab');if(!t)return;
+  $$('#langTabs .tab').forEach(x=>{x.classList.remove('active');x.setAttribute('aria-selected','false')});
+  t.classList.add('active');t.setAttribute('aria-selected','true');
+  const body=$('#transBody');
+  body.style.opacity=0;
+  setTimeout(()=>{body.textContent=TRANSLATIONS[t.dataset.lang];body.setAttribute('lang',t.dataset.lang);body.style.transition='opacity .3s';body.style.opacity=1},160);
+});
+
+/* ============ history ============ */
+const HISTORY=[
+  {name:'Blood_Test_Report.pdf',type:'Blood Test',date:'Today · 9:14 AM',status:'Completed',icon:'i-drop',color:'#0078D4',findings:'4 findings · 2 flagged'},
+  {name:'MRI_Brain_Summary.pdf',type:'MRI',date:'May 28 · 2:40 PM',status:'Completed',icon:'i-brain',color:'#6B5BD2',findings:'2 findings · all explained'},
+  {name:'CT_Chest_Report.pdf',type:'CT Scan',date:'May 20 · 11:05 AM',status:'Completed',icon:'i-lung',color:'#0B6F86',findings:'3 findings · 1 flagged'},
+  {name:'Annual_Screening_2026.docx',type:'Screening',date:'May 12 · 4:18 PM',status:'Completed',icon:'i-pulse',color:'#107C10',findings:'All values normal'},
+  {name:'Lipid_Panel_Followup.png',type:'Blood Test',date:'Apr 30 · 8:52 AM',status:'Processing',icon:'i-flask',color:'#C2497B',findings:'Agents working…'},
+  {name:'Discharge_Summary_Old.pdf',type:'Summary',date:'Apr 02 · 1:22 PM',status:'Failed',icon:'i-doc',color:'#D13438',findings:'Scan quality too low — try a clearer photo'}
+];
+function statusBadge(s){
+  if(s==='Completed')return'<span class="badge badge-green"><span class="dot" style="background:var(--success)"></span> Completed</span>';
+  if(s==='Processing')return'<span class="badge badge-blue"><span class="thinking-dots"><i></i><i></i><i></i></span> Processing</span>';
+  return'<span class="badge badge-red"><svg width="11" height="11"><use href="#i-warn"/></svg> Failed</span>';
+}
+function renderHistory(){
+  const q=($('#histSearch').value||'').toLowerCase();
+  const ty=$('#histType').value, st=$('#histStatus').value;
+  const list=$('#histList');list.innerHTML='';
+  const rows=HISTORY.filter(h=>(!q||h.name.toLowerCase().includes(q)||h.type.toLowerCase().includes(q))&&(!ty||h.type===ty)&&(!st||h.status===st));
+  $('#histEmpty').classList.toggle('show',rows.length===0);
+  list.style.display=rows.length?'':'none';
+  rows.forEach(h=>{
+    const d=document.createElement('div');d.className='hist-item';
+    d.innerHTML=`<div class="card lift hist-card">
+      <span class="h-ic" style="background:${h.color}1A;color:${h.color}"><svg><use href="#${h.icon}"/></svg></span>
+      <div><b>${h.name}</b><div class="h-meta"><span>${h.date}</span><span>·</span><span>${h.type}</span><span>·</span><span>${h.findings}</span></div></div>
+      <div class="h-act">${statusBadge(h.status)}
+        <button class="icon-btn" aria-label="View ${h.name}" title="View"><svg><use href="#i-eye"/></svg></button>
+        <button class="icon-btn" aria-label="Export ${h.name}" title="Export"><svg><use href="#i-download"/></svg></button>
+        <button class="icon-btn danger" aria-label="Delete ${h.name}" title="Delete"><svg><use href="#i-trash"/></svg></button>
+      </div></div>`;
+    const[vw,ex,del]=d.querySelectorAll('.h-act .icon-btn');
+    vw.onclick=()=>{showView('dashboard');$('#uploadWrap').style.display='none';$('#pipeline').classList.remove('show');$('#results').classList.add('show');toast('Opened analysis for '+h.name)};
+    ex.onclick=()=>toast('Exported '+h.name+' briefing as PDF (demo)');
+    del.onclick=()=>{d.style.transition='opacity .3s,transform .3s';d.style.opacity=0;d.style.transform='translateX(24px)';setTimeout(()=>{HISTORY.splice(HISTORY.indexOf(h),1);renderHistory();toast('Deleted '+h.name)},300)};
+    list.appendChild(d);
+  });
+}
+function clearHistFilters(){$('#histSearch').value='';$('#histType').value='';$('#histStatus').value='';renderHistory()}
+['histSearch','histType','histStatus'].forEach(id=>document.getElementById(id).addEventListener(id==='histSearch'?'input':'change',renderHistory));
+renderHistory();
+
+/* ============ knowledge base ============ */
+const TOPICS=[
+  ['Heart','i-heart','linear-gradient(135deg,#D13438,#FF7A8A)','How your heart pumps, blood pressure, cholesterol and ECG basics.','Your heart is a muscular pump that moves about 5 litres of blood every minute. Reports often mention blood pressure (the force on artery walls), cholesterol (fats that can narrow arteries) and ECG readings (the heart\'s electrical rhythm). Healthy habits — movement, sleep, less salt — support all three.',24],
+  ['Blood','i-drop','linear-gradient(135deg,#0078D4,#4CC2FF)','Red & white cells, hemoglobin, platelets and what counts mean.','Blood has red cells (carry oxygen via hemoglobin), white cells (fight infection) and platelets (form clots to stop bleeding). A "full blood count" measures all three. Low hemoglobin often points to iron deficiency; high white cells can simply mean your body is fighting something.',31],
+  ['Bone','i-bone','linear-gradient(135deg,#9D6800,#FFB900)','Bone density, calcium, vitamin D and fracture-risk scans.','Bones constantly rebuild themselves using calcium and vitamin D. A DEXA scan measures bone density — lower density (osteopenia or osteoporosis) means higher fracture risk. Weight-bearing exercise and adequate vitamin D help keep bones strong.',18],
+  ['Brain','i-brain','linear-gradient(135deg,#6B5BD2,#B07AF0)','MRI & CT basics, common findings and what they really mean.','Brain MRI and CT reports use precise language that can sound scarier than it is — "unremarkable" is good news! Common benign findings include small white-matter spots that become more frequent with age. Your doctor interprets findings alongside your symptoms.',27],
+  ['Kidney','i-kidney','linear-gradient(135deg,#0B6F86,#00B7C3)','eGFR, creatinine, urine tests and kidney health.','Kidneys filter waste from your blood and balance fluids. eGFR estimates filtering power (90+ is normal); creatinine is a waste product that rises when filtering slows. Staying hydrated and managing blood pressure protect kidney health.',22],
+  ['Lung','i-lung','linear-gradient(135deg,#107C10,#5EE08A)','Chest X-rays, CT scans, spirometry and breathing tests.','Lung reports may mention opacities (areas that look denser on a scan), nodules (small spots, usually benign) or spirometry results (how much air you can move). Many findings just need monitoring — your doctor will say if follow-up imaging is needed.',19],
+  ['Liver','i-liver','linear-gradient(135deg,#8F4700,#E8883C)','ALT, AST, bilirubin and fatty liver explained simply.','The liver processes nutrients and filters toxins. Enzymes ALT and AST leak into blood when liver cells are stressed — mild elevations are common and often reversible. "Fatty liver" means fat stored in liver cells, usually improved by diet and exercise.',21]
+];
+const kb=$('#kbGrid');
+TOPICS.forEach(([t,ic,bg,sub,body,n])=>{
+  const c=document.createElement('button');
+  c.className='card lift kb-card';
+  c.innerHTML=`<span class="kb-ic" style="background:${bg}"><svg><use href="#${ic}"/></svg></span><h3>${t}</h3><p>${sub}</p><div class="kb-count">${n} articles · AI explained</div>`;
+  c.onclick=()=>openModal(t,'AI explanation · grounded in WHO & NIH sources',body);
+  kb.appendChild(c);
+});
+
+/* ============ modal ============ */
+function openModal(title,sub,body){
+  $('#modalTitle').textContent=title;
+  $('#modalSub').textContent=sub;
+  $('#modalBody').textContent=body;
+  $('#modalBg').classList.add('show');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>$('#modalBg .btn').focus(),80);
+}
+function closeModal(){$('#modalBg').classList.remove('show');document.body.style.overflow=''}
+
+/* ============ agent wires ============ */
+function drawWires(){
+  const grid=$('#agentsGrid'),svg=$('#agentWires');
+  if(!grid||!svg)return;
+  const cards=[...grid.querySelectorAll('.agent-card')];
+  const orch=cards[0];if(!orch)return;
+  const gr=grid.getBoundingClientRect(),or=orch.getBoundingClientRect();
+  const ox=or.left-gr.left+or.width/2, oy=or.top-gr.top+or.height;
+  svg.setAttribute('viewBox',`0 0 ${gr.width} ${gr.height}`);
+  let html='';
+  cards.slice(1).forEach(c=>{
+    const r=c.getBoundingClientRect();
+    const x=r.left-gr.left+r.width/2, y=r.top-gr.top;
+    html+=`<path class="wire" d="M${ox},${oy} C${ox},${oy+50} ${x},${y-50} ${x},${y}"/>`;
+  });
+  svg.innerHTML=html;
+}
+addEventListener('resize',()=>{if($('#view-agents').classList.contains('active'))drawWires()});
+
+/* ============ global search (demo) ============ */
+$('#globalSearch').addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&e.target.value.trim()){
+    showView('history');
+    $('#histSearch').value=e.target.value;renderHistory();
+    toast('Searching workspace for "'+e.target.value+'"');
+  }
+});
+
+/* ============ LIVE AZURE MODE (open with ?api=https://your-function-app.azurewebsites.net) ============ */
+(function(){
+  const m=location.search.match(/[?&]api=([^&]+)/);
+  const API=(m?decodeURIComponent(m[1]):window.MEDICARE_API||'').replace(/\/+$/,'');
+  if(!API)return;
+  addEventListener('load',()=>{
+    const tb=document.querySelector('.tb-right');
+    if(tb){const b=document.createElement('span');b.className='badge badge-green';
+      b.innerHTML='<span class="dot pulse" style="background:var(--success)"></span> LIVE · Azure';tb.prepend(b)}
+  });
+  const steps=()=>[...document.querySelectorAll('#plSteps .pl-step')];
+  function setStep(i,state){const s=steps()[i];if(!s)return;s.className='pl-step'+(state?' '+state:'');
+    s.querySelector('.ps-state').innerHTML=state==='done'?'Done ✓':state==='working'?'<span class="thinking-dots"><i></i><i></i><i></i></span>':'Queued'}
+  function pct(p){document.getElementById('plBar').style.width=p+'%';document.getElementById('plPct').textContent=p+'%'}
+  async function post(path,body){const r=await fetch(API+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(!r.ok){const j=await r.json().catch(()=>({}));throw new Error(j.error||('HTTP '+r.status))}return r.json()}
+  const fileB64=f=>new Promise((res,rej)=>{const rd=new FileReader();rd.onload=()=>res(String(rd.result).split(',')[1]);rd.onerror=rej;rd.readAsDataURL(f)});
+  function esc(s){const d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML}
+
+  const origHandle=handleFile;
+  handleFile=async function(f){
+    if(!f)return;
+    const ext=f.name.split('.').pop().toLowerCase();
+    if(!['pdf','png','jpg','jpeg','docx'].includes(ext)||f.size>25*1024*1024)return origHandle(f);
+    document.getElementById('uploadError').classList.remove('show');
+    document.getElementById('uploadWrap').style.display='none';
+    document.getElementById('results').classList.remove('show');
+    const pl=document.getElementById('pipeline');pl.classList.add('show');
+    document.getElementById('plTitle').textContent='Analyzing '+f.name+' — live on Azure';
+    steps().forEach((s,i)=>setStep(i,''));pct(0);
+    pl.scrollIntoView({behavior:'smooth',block:'start'});
+    try{
+      setStep(0,'working');const b64=await fileB64(f);setStep(0,'done');pct(11);
+      setStep(1,'working');const ex=await post('/api/extract',{base64:b64});setStep(1,'done');pct(28);
+      [2,3,4,5,6].forEach(i=>setStep(i,'working'));
+      const a=await post('/api/analyze',{text:ex.text});
+      [2,3,4,5,6].forEach(i=>setStep(i,'done'));pct(80);
+      setStep(7,'done');pct(90);
+      setStep(8,'working');render(a,f.name);setStep(8,'done');pct(100);
+      setTimeout(()=>{pl.classList.remove('show');document.getElementById('results').classList.add('show');
+        document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+        toast('Live analysis complete — Azure OpenAI + Document Intelligence')},500);
+    }catch(e){
+      pl.classList.remove('show');document.getElementById('uploadWrap').style.display='';
+      document.getElementById('uploadErrorTitle').textContent='Azure service unavailable';
+      document.getElementById('uploadErrorMsg').textContent=(e.message||'Request failed')+' — check the API URL and deployment, or remove ?api= to use the offline demo.';
+      document.getElementById('uploadError').classList.add('show');
+    }
+  };
+
+  function render(a,name){
+    const Q=s=>document.querySelector(s);
+    if(a.summary)Q('#summaryText').textContent=a.summary;
+    Q('.res-banner b').textContent='Analysis complete — '+name;
+    Q('.res-banner span').textContent='Live · Azure OpenAI + Document Intelligence · educational, not diagnostic';
+    const fc=Q('#findingsCard');
+    if(fc&&Array.isArray(a.findings)){fc.querySelectorAll('.finding').forEach(x=>x.remove());
+      const co={normal:['rgba(22,198,12,.12)','var(--success-dark)','badge-green'],low:['rgba(255,185,0,.15)','var(--warning-dark)','badge-amber'],high:['rgba(255,185,0,.15)','var(--warning-dark)','badge-amber'],attention:['rgba(209,52,56,.1)','var(--error)','badge-red']};
+      a.findings.slice(0,6).forEach(x=>{const c=co[x.status]||co.normal;
+        const d=document.createElement('div');d.className='finding';
+        d.innerHTML='<span class="fi-ic" style="background:'+c[0]+';color:'+c[1]+'"><svg><use href="#i-pulse"/></svg></span><div><b>'+esc(x.label)+(x.value?' — '+esc(x.value):'')+' <span class="badge '+c[2]+'" style="padding:2px 9px;font-size:10.5px">'+esc(x.status||'noted')+'</span></b><small>'+esc(x.note||'')+'</small></div>';
+        fc.appendChild(d)})}
+    const tc=Q('#traceCard');
+    if(tc&&Array.isArray(a.trace)){tc.querySelectorAll('.finding').forEach(x=>x.remove());
+      a.trace.slice(0,5).forEach((x,i)=>{const d=document.createElement('div');d.className='finding';
+        d.innerHTML='<span class="fi-ic" style="background:rgba(0,120,212,.1);color:var(--azure)"><b style="font-size:13px">'+(i+1)+'</b></span><div><b>'+esc(x.title)+'</b><small>'+esc(x.note||'')+'</small></div>';
+        tc.appendChild(d)})}
+    if(Array.isArray(a.terms)){const tch=Q('#termChips');tch.innerHTML='';Q('#termDetail').classList.remove('show');
+      a.terms.forEach(t=>{const c=document.createElement('button');c.className='term-chip';c.textContent=t.term;c.setAttribute('aria-expanded','false');
+        c.onclick=()=>{document.querySelectorAll('.term-chip').forEach(x=>x.setAttribute('aria-expanded','false'));c.setAttribute('aria-expanded','true');
+          const td=Q('#termDetail');td.innerHTML='<b>'+esc(t.term)+'</b> — '+esc(t.explain);td.classList.add('show')};
+        tch.appendChild(c)})}
+    if(Array.isArray(a.questions)){const ql=Q('#qList');ql.innerHTML='';
+      a.questions.forEach((q,i)=>{const d=document.createElement('div');d.className='qitem';
+        d.innerHTML='<input type="checkbox" id="lq'+i+'"><label for="lq'+i+'">'+esc(q)+'</label>';
+        d.querySelector('input').addEventListener('change',e=>d.classList.toggle('checked',e.target.checked));ql.appendChild(d)})}
+    if(a.translations){if(a.summary)TRANSLATIONS.en=a.summary;
+      ['ms','zh','ja'].forEach(k=>{if(a.translations[k])TRANSLATIONS[k]=a.translations[k]});
+      const act=document.querySelector('#langTabs .tab.active');
+      const body=Q('#transBody');body.textContent=TRANSLATIONS[(act&&act.dataset.lang)||'en'];}
+    // Trusted References — render the REAL citations returned by Foundry IQ.
+    const rg=Q('#refsGrid'), rsub=Q('#refsSub');
+    if(rg){
+      if(Array.isArray(a.references)&&a.references.length){
+        rg.innerHTML='';
+        a.references.forEach(ref=>{
+          const tag=((ref.title||'Source').replace(/[^A-Za-z]/g,'').slice(0,3).toUpperCase())||'SRC';
+          const link=ref.url&&/^https?:\/\//.test(ref.url);
+          const el=document.createElement(link?'a':'div');
+          el.className='refitem';
+          if(link){el.href=ref.url;el.target='_blank';el.rel='noopener noreferrer';}
+          el.innerHTML='<span class="ref-ic" style="background:#0B6F86">'+esc(tag)+'</span>'+
+            '<div><b>'+esc(ref.title||'Source')+'</b><small>'+esc(ref.snippet||ref.docKey||'Retrieved via Foundry IQ')+'</small></div>';
+          rg.appendChild(el);
+        });
+        if(rsub)rsub.textContent='Research Agent · '+a.references.length+' source'+(a.references.length>1?'s':'')+' retrieved via Foundry IQ';
+      } else if(a.grounded===false){
+        rg.innerHTML='<div class="refitem"><span class="ref-ic" style="background:#9AA5B1">i</span>'+
+          '<div><b>Live grounding unavailable for this run</b><small>Foundry IQ returned no sources — the summary relies on general medical knowledge. Citations are not shown rather than invented.</small></div></div>';
+        if(rsub)rsub.textContent='Research Agent · Foundry IQ grounding unavailable this run';
+      }
+    }
+  }
+})();
+
+
+/* ============ honesty: label simulated (offline) mode ============ */
+/* When opened WITHOUT ?api=, the app runs on built-in sample data — no Azure or
+   Foundry IQ calls are made. Make that explicit so the demo never over-claims. */
+(function(){
+  if(/[?&]api=/.test(location.search)||window.MEDICARE_API)return; // live mode handles its own badge
+  addEventListener('load',()=>{
+    const tb=document.querySelector('.tb-right');
+    if(tb&&!tb.querySelector('.demo-badge')){
+      const b=document.createElement('span');b.className='badge badge-amber demo-badge';
+      b.title='Running on built-in sample data — open with ?api=<your-function-app> for live Azure + Foundry IQ';
+      b.textContent='Demo · sample data';
+      tb.prepend(b);
+    }
+    // Soften the simulated results banner so "grounded via Foundry IQ" isn't claimed offline.
+    const bspan=document.querySelector('.res-banner span');
+    if(bspan&&/Foundry IQ/.test(bspan.textContent))
+      bspan.textContent='Simulated demo · sample data · educational, not diagnostic — connect Azure (?api=) for live Foundry IQ grounding';
+    const refsSub=document.getElementById('refsSub');
+    if(refsSub)refsSub.textContent='Sample references (illustrative) · live citations come from Foundry IQ in Azure mode';
+    // Soften any "Foundry IQ grounded" badge so the simulated run doesn't claim real grounding.
+    document.querySelectorAll('.badge').forEach(b=>{
+      if(/Foundry IQ grounded/i.test(b.textContent)) b.textContent='Foundry IQ grounding (simulated)';
+    });
+    document.querySelectorAll('.res-banner span').forEach(s=>{
+      if(/grounded via Foundry IQ/i.test(s.textContent))
+        s.textContent='Simulated demo · sample data · educational, not diagnostic';
+    });
+  });
+})();
+
+/* ============ creative extras: dark mode · body map · read aloud ============ */
+let darkOn=false;
+function toggleDark(){
+  darkOn=!darkOn;
+  document.body.classList.toggle('dark',darkOn);
+  const t=document.getElementById('darkToggle');
+  if(t)t.setAttribute('aria-checked',darkOn?'true':'false');
+}
+const BODYMAP=[
+  {key:'heart',flag:true,icon:'i-heart',title:'Heart & cholesterol',note:'LDL is mildly elevated (3.9). Usually improved with diet and exercise — worth a chat with your doctor.'},
+  {key:'blood',flag:true,icon:'i-drop',title:'Blood & iron',note:'Hemoglobin is slightly low (11.2). Often linked to low iron — a ferritin test can confirm.'},
+  {key:'kidneys',flag:false,icon:'i-kidney',title:'Kidneys',note:'eGFR 96 — filtering at a healthy rate. Nothing to do here.'},
+  {key:'brain',flag:false,icon:'i-brain',title:'Metabolism & blood sugar',note:'HbA1c 5.4% — excellent 3-month blood sugar control. No sign of diabetes.'}
+];
+(function(){
+  const list=document.getElementById('bmList');if(!list)return;
+  function select(key){
+    document.querySelectorAll('.bm-organ').forEach(o=>o.classList.toggle('sel',o.dataset.bm===key));
+    document.querySelectorAll('.bm-item').forEach(i=>i.classList.toggle('sel',i.dataset.bm===key));
+  }
+  BODYMAP.forEach(b=>{
+    const d=document.createElement('div');
+    d.className='finding bm-item';d.dataset.bm=b.key;d.setAttribute('role','listitem');d.tabIndex=0;
+    d.innerHTML='<span class="fi-ic" style="background:'+(b.flag?'rgba(255,185,0,.15)':'rgba(22,198,12,.12)')+';color:'+(b.flag?'var(--warning-dark)':'var(--success-dark)')+'"><svg><use href="#'+b.icon+'"/></svg></span><div><b>'+b.title+' '+(b.flag?'<span class="badge badge-amber" style="padding:2px 9px;font-size:10.5px">Worth discussing</span>':'<span class="badge badge-green" style="padding:2px 9px;font-size:10.5px">All good</span>')+'</b><small>'+b.note+'</small></div>';
+    d.onclick=()=>select(b.key);
+    d.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select(b.key)}};
+    list.appendChild(d);
+  });
+  document.querySelectorAll('.bm-organ').forEach(o=>{
+    const b=BODYMAP.find(x=>x.key===o.dataset.bm);
+    if(b&&b.flag)o.classList.add('flag');
+    o.addEventListener('click',()=>{select(o.dataset.bm);
+      const row=document.querySelector('.bm-item[data-bm="'+o.dataset.bm+'"]');
+      row&&row.scrollIntoView({behavior:'smooth',block:'nearest'})});
+  });
+})();
+let speaking=false;
+function speakSummary(){
+  if(!('speechSynthesis'in window)){toast('Read-aloud is not supported in this browser');return}
+  if(speaking){speechSynthesis.cancel();speaking=false;return}
+  const act=document.querySelector('#langTabs .tab.active');
+  const lang={en:'en-US',ms:'ms-MY',zh:'zh-CN',ja:'ja-JP'}[(act&&act.dataset.lang)||'en'];
+  const u=new SpeechSynthesisUtterance(document.getElementById('transBody').textContent);
+  u.lang=lang;u.rate=.98;
+  u.onend=()=>{speaking=false};
+  speaking=true;speechSynthesis.speak(u);
+  toast('Reading aloud ('+lang+') — tap again to stop');
+}
+
+/* ============ auto demo tour — open with ?autodemo ============ */
+(function(){
+  if(!/[?&]autodemo/.test(location.search))return;
+  const cur=document.createElement('div');
+  cur.style.cssText='position:fixed;left:0;top:0;width:22px;height:22px;border-radius:50%;background:rgba(0,120,212,.92);border:2.5px solid #fff;box-shadow:0 2px 10px rgba(0,40,90,.45);z-index:9999;pointer-events:none;transform:translate(-50%,-50%);transition:opacity .5s,transform .14s;opacity:0';
+  document.body.appendChild(cur);
+  let cx=innerWidth/2,cy=innerHeight*.6;
+  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+  const setPos=(x,y)=>{cx=x;cy=y;cur.style.left=x+'px';cur.style.top=y+'px'};
+  const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+  const move=(x,y,d=900)=>new Promise(res=>{const sx=cx,sy=cy,t0=performance.now();
+    (function f(t){const p=Math.min(1,(t-t0)/d),e=ease(p);
+      setPos(sx+(x-sx)*e+Math.sin(p*7)*(1-p)*6,sy+(y-sy)*e+Math.cos(p*5)*(1-p)*4);
+      p<1?requestAnimationFrame(f):res()})(t0)});
+  async function clickEl(el,d=900){if(!el)return;el.scrollIntoView({behavior:'smooth',block:'center'});await sleep(750);
+    const r=el.getBoundingClientRect();await move(r.left+r.width/2+(Math.random()*8-4),r.top+r.height/2+(Math.random()*6-3),d);
+    await sleep(300);cur.style.transform='translate(-50%,-50%) scale(.7)';await sleep(140);
+    cur.style.transform='translate(-50%,-50%) scale(1)';el.click();await sleep(480)}
+  async function drift(px,wait=1400){window.scrollBy({top:px,behavior:'smooth'});await sleep(wait)}
+  async function tour(){
+    await sleep(1600);cur.style.opacity=1;setPos(innerWidth*.62,innerHeight*.55);
+    const upBtn=document.querySelector('.hero-actions .btn-primary');
+    if(upBtn){const r=upBtn.getBoundingClientRect();await move(r.left+r.width/2,r.top+r.height/2,1300);await sleep(900)}
+    await drift(innerHeight*.85);await drift(innerHeight*.85);
+    await drift(innerHeight*.9,1500);
+    window.scrollTo({top:0,behavior:'smooth'});await sleep(1400);
+    await clickEl(document.querySelector('.hero-actions .btn-secondary'),1100);
+    for(let i=0;i<5;i++){const w=document.querySelector('.pl-step.working');
+      if(w){const r=w.getBoundingClientRect();await move(innerWidth*.5+110,Math.min(Math.max(r.top+19,150),innerHeight-130),900)}
+      await sleep(1800)}
+    await sleep(3600);
+    await sleep(1200);await drift(innerHeight*.7);
+    await clickEl(document.querySelector('.term-chip'));await sleep(1700);
+    await clickEl(document.querySelector('[data-lang="zh"]'));await sleep(1900);
+    await drift(innerHeight*.7,1300);
+    await clickEl(document.querySelector('.sb-item[data-view="agents"]'));await sleep(1900);
+    await drift(innerHeight*.6,1700);
+    await clickEl(document.querySelector('.sb-item[data-view="history"]'));await sleep(2300);
+    await clickEl(document.querySelector('.sb-item[data-view="dashboard"]'));await sleep(900);
+    const rt=[...document.querySelectorAll('#results h3')].find(h=>h.textContent==='Reasoning Trace');
+    if(rt)rt.scrollIntoView({behavior:'smooth',block:'start'});await sleep(2800);
+    await drift(innerHeight*.85,2200);
+    cur.style.opacity=0;
+  }
+  if(document.readyState==='complete')tour();else addEventListener('load',tour);
+})();
+
+</script>
+</body

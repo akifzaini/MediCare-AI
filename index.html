@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediCare AI — Upload. Understand. Prepare.</title>
+<meta name="description" content="AI-powered medical report assistant built with Microsoft Azure.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<linearGradient id="spinGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0078D4"/><stop offset="100%" stop-color="#00B7C3"/></linearGradient>
+<symbol id="i-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2.5-7 4 14 2.5-7h5"/></symbol>
+<symbol id="i-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></symbol>
+<symbol id="i-spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 16l.9 2.1L22 19l-2.1.9L19 22l-.9-2.1L16 19l2.1-.9z"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
+<symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></symbol>
+<symbol id="i-cloud" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 1 0-.9-8.9 7 7 0 1 0-11.3 6.4"/><path d="M6 19h11.5"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+<symbol id="i-bot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 8V4M8 4h8"/><circle cx="9" cy="13.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1" fill="currentColor" stroke="none"/><path d="M9.5 17h5"/></symbol>
+<symbol id="i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5h.1a1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21.2l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></symbol>
+<symbol id="i-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5V20a2.5 2.5 0 0 1-4.96.44A2.5 2.5 0 0 1 5 18a2.5 2.5 0 0 1-1.96-4A2.5 2.5 0 0 1 3 9.5 2.5 2.5 0 0 1 5.5 7 2.5 2.5 0 0 1 7 4.5 2.5 2.5 0 0 1 9.5 2z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5V20a2.5 2.5 0 0 0 4.96.44A2.5 2.5 0 0 0 19 18a2.5 2.5 0 0 0 1.96-4A2.5 2.5 0 0 0 21 9.5 2.5 2.5 0 0 0 18.5 7 2.5 2.5 0 0 0 17 4.5 2.5 2.5 0 0 0 14.5 2z"/></symbol>
+<symbol id="i-drop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.7s6.5 7 6.5 11.3a6.5 6.5 0 0 1-13 0C5.5 9.7 12 2.7 12 2.7z"/></symbol>
+<symbol id="i-bone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 10c.8 0 1.5-.3 2.1-.9a3 3 0 1 0-4.2-4.2c-.6.6-.9 1.3-.9 2.1l-4 4c-.8 0-1.5.3-2.1.9a3 3 0 1 0 4.2 4.2c.6-.6.9-1.3.9-2.1z" transform="rotate(7 12 12)"/></symbol>
+<symbol id="i-lung" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v8"/><path d="M9 9c-1.5-1-4-1-5.5 1.5C2 13.2 2 17.5 2 19c0 1.2 1 2 2.2 2C7 21 9 19.8 9 17z"/><path d="M15 9c1.5-1 4-1 5.5 1.5C22 13.2 22 17.5 22 19c0 1.2-1 2-2.2 2C17 21 15 19.8 15 17z"/></symbol>
+<symbol id="i-kidney" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4c-4 0-8 3.6-8 8s4 8 8 8c2.2 0 3-1.4 3-2.7 0-1.6-1.6-2-1.6-3.6 0-1.2 1.1-1.5 1.1-3.2C16.5 8 17 7.4 17 6.3 17 5 16.2 4 14 4z"/></symbol>
+<symbol id="i-liver" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9c0-2.2 1.8-4 4-4h10a4 4 0 0 1 4 4c0 5-4 9-9 10l-3.5.8A2 2 0 0 1 6 17.9V14a8.5 8.5 0 0 1-3-5z"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></symbol>
+<symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></symbol>
+<symbol id="i-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><circle cx="12" cy="17" r=".5" fill="currentColor"/></symbol>
+<symbol id="i-flask" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v6.5L4.3 18A2.4 2.4 0 0 0 6.4 21.5h11.2a2.4 2.4 0 0 0 2.1-3.5L14 8.5V2"/><path d="M8 2h8"/><path d="M7 15h10"/></symbol>
+<symbol id="i-scan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></symbol>
+<symbol id="i-translate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h7M7.5 3v2c0 4.4-2.5 7.5-5 9"/><path d="M5.5 9c.8 2.2 3 4.5 5.5 5.5"/><path d="M12 20l4-9 4 9M13.1 17.5h5.8"/></symbol>
+<symbol id="i-net" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.2"/><circle cx="5" cy="18" r="2.2"/><circle cx="19" cy="18" r="2.2"/><path d="M11 7l-4.5 9M13 7l4.5 9M7.2 18h9.6"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+<symbol id="i-speaker" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.8 5.2a9 9 0 0 1 0 13.6"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></symbol>
+</defs>
+</svg>
+
+<!-- ================= LANDING ================= -->
+<div id="landing">
+  <nav class="nav" id="navbar" aria-label="Main navigation">
+    <a class="logo" href="#top">
+      <span class="logo-mark"><svg fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3 12h4l2.5-7 4 14 2.5-7h5"/></svg></span>
+      MediCare&nbsp;AI
+    </a>
+    <div class="nav-links">
+      <a href="#top">Home</a><a href="#features">Features</a><a href="#agents">AI Agents</a>
+      <a href="#how">How it works</a><a href="#about">About</a><a href="#contact">Contact</a>
+    </div>
+    <div class="nav-cta">
+      <button class="btn btn-ghost" onclick="enterApp()">Sign In</button>
+      <button class="btn btn-primary btn-sm" onclick="enterApp()" style="min-height:44px;padding:11px 22px">Get Started</button>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="hero-copy">
+      <span class="badge badge-blue hero-eyebrow"><svg width="14" height="14"><use href="#i-spark"/></svg> Powered by Microsoft Azure AI &nbsp;·&nbsp; Upload. Understand. Prepare.</span>
+      <h1>Understand medical reports with <span class="grad">intelligent AI&nbsp;agents</span></h1>
+      <p class="sub">Upload any medical report and receive easy-to-understand explanations, trusted references, and personalized discussion points — powered by Microsoft Azure AI.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" onclick="enterApp()"><svg><use href="#i-upload"/></svg> Upload Report</button>
+        <button class="btn btn-secondary" onclick="enterApp(true)"><svg><use href="#i-eye"/></svg> View Live Demo</button>
+        <button class="btn btn-ghost" onclick="enterApp()">Try AI Workspace →</button>
+      </div>
+      <div class="hero-note">
+        <span><svg><use href="#i-check"/></svg> No diagnosis — education only</span>
+        <span><svg><use href="#i-check"/></svg> Private &amp; encrypted</span>
+        <span><svg><use href="#i-check"/></svg> 4 languages</span>
+      </div>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <div class="hv-stage">
+        <div class="hv-glow"></div>
+        <div class="hv-ring r1"><span class="hv-node" style="top:-5px;left:50%"></span></div>
+        <div class="hv-ring r2"><span class="hv-node" style="bottom:18%;right:2%"></span></div>
+        <div class="hv-report">
+          <div class="rh">
+            <span class="ric"><svg width="17" height="17"><use href="#i-doc"/></svg></span>
+            <div><b>Blood_Test_Report.pdf</b><small>Full Blood Count · 2 pages</small></div>
+          </div>
+          <div class="hv-line w85"></div><div class="hv-line"></div><div class="hv-line w70"></div>
+          <div class="hv-line w55"></div><div class="hv-line w85"></div>
+          <div class="hv-chiprow"><span>Hemoglobin</span><span>HbA1c</span><span>LDL-C</span></div>
+        </div>
+        <div class="hv-agent hv-a1"><span class="av" style="background:var(--azure)"><svg><use href="#i-scan"/></svg></span><span>Report Reader<small>Extracting findings…</small></span></div>
+        <div class="hv-agent hv-a2"><span class="av" style="background:var(--accent)"><svg><use href="#i-spark"/></svg></span><span>Medical Simplifier<small>Plain English…</small></span></div>
+        <div class="hv-agent hv-a3"><span class="av" style="background:#6B5BD2"><svg><use href="#i-translate"/></svg></span><span>Translation Agent<small>EN · MY · 中文 · 日本語</small></span></div>
+        <div class="hv-agent hv-a4"><span class="av" style="background:#0B6F86"><svg><use href="#i-book"/></svg></span><span>Research Agent<small>WHO · NIH · MOH</small></span></div>
+        <div class="hv-azure"><svg width="14" height="14"><use href="#i-cloud"/></svg> Azure AI Connected</div>
+      </div>
+    </div>
+  </header>
+
+  <section class="trust reveal">
+    <p>Built for trust, privacy &amp; healthcare readiness</p>
+    <div class="trust-row">
+      <div class="trust-item"><svg><use href="#i-cloud"/></svg> Microsoft Azure</div>
+      <div class="trust-item"><svg><use href="#i-spark"/></svg> AI Powered</div>
+      <div class="trust-item"><svg><use href="#i-shield"/></svg> Secure Upload</div>
+      <div class="trust-item"><svg><use href="#i-eye"/></svg> Privacy First</div>
+      <div class="trust-item"><svg><use href="#i-pulse"/></svg> Healthcare Ready</div>
+    </div>
+  </section>
+
+  <section class="section" id="features">
+    <div class="sec-head reveal">
+      <span class="badge badge-teal"><svg width="13" height="13"><use href="#i-grid"/></svg> Capabilities</span>
+      <h2>Everything you need to walk into your next appointment prepared</h2>
+      <p>Six intelligent capabilities working together — from raw report to confident conversation.</p>
+    </div>
+    <div class="features-grid">
+      <article class="card lift feature reveal">
+        <div class="f-icon" style="background:var(--grad-azure)"><svg><use href="#i-upload"/></svg></div>
+        <h3>Upload Reports</h3>
+        <p>Drag &amp; drop any medical document. Blood tests, CT, MRI, screenings and summaries.</p>
+        <div class="f-preview f-tags"><span>PDF</span><span>PNG</span><span>JPEG</span><span>DOCX</span></div>
+      </article>
+      <article class="card lift feature reveal" data-d="1">
+        <div class="f-icon" style="background:linear-gradient(135deg,#00B7C3,#16C60C)"><svg><use href="#i-spark"/></svg></div>
+        <h3>AI Summary</h3>
+        <p>Turns dense medical language into plain English anyone can understand.</p>
+        <div class="f-preview">
+          <span class="f-before">"Mild microcytic hypochromic anemia"</span>
+          <span class="f-after"><svg><use href="#i-check"/></svg> "Your red blood cells are smaller and paler than usual — often linked to low iron."</span>
+        </div>
+      </article>
+      <article class="card lift feature reveal" data-d="2">
+        <div class="f-icon" style="background:linear-gradient(135deg,#6B5BD2,#4CC2FF)"><svg><use href="#i-book"/></svg></div>
+        <h3>Medical Dictionary</h3>
+        <p>Click any medical term for an instant, friendly explanation.</p>
+        <div class="f-preview">Try it: <span class="f-term" onclick="this.nextElementSibling.style.display='block'"><svg width="12" height="12"><use href="#i-search"/></svg> HbA1c</span><span style="display:none;margin-top:9px;color:#2C5E8F"> → Your average blood sugar over ~3 months.</span></div>
+      </article>
+      <article class="card lift feature reveal">
+        <div class="f-icon" style="background:linear-gradient(135deg,#0078D4,#6B5BD2)"><svg><use href="#i-chat"/></svg></div>
+        <h3>Doctor Questions</h3>
+        <p>Generates intelligent, personalized questions for your appointment.</p>
+        <div class="f-preview">
+          <div class="q"><svg><use href="#i-check"/></svg> Should I repeat this test, and when?</div>
+          <div class="q"><svg><use href="#i-check"/></svg> Could my diet affect these results?</div>
+        </div>
+      </article>
+      <article class="card lift feature reveal" data-d="1">
+        <div class="f-icon" style="background:linear-gradient(135deg,#00B7C3,#0078D4)"><svg><use href="#i-translate"/></svg></div>
+        <h3>Translation</h3>
+        <p>Read every explanation in the language you're most comfortable with.</p>
+        <div class="f-preview f-langs"><span class="on">English</span><span>Bahasa Melayu</span><span>中文</span><span>日本語</span></div>
+      </article>
+      <article class="card lift feature reveal" data-d="2">
+        <div class="f-icon" style="background:linear-gradient(135deg,#107C10,#00B7C3)"><svg><use href="#i-shield"/></svg></div>
+        <h3>Trusted References</h3>
+        <p>Grounded in reputable sources via Microsoft Foundry IQ retrieval.</p>
+        <div class="f-preview f-refs">
+          <a href="#" onclick="return false"><svg><use href="#i-link"/></svg> World Health Organization (WHO)</a>
+          <a href="#" onclick="return false"><svg><use href="#i-link"/></svg> National Institutes of Health (NIH)</a>
+          <a href="#" onclick="return false"><svg><use href="#i-link"/></svg> Ministry of Health (MOH) · Journals</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="how" id="how">
+    <div class="section">
+      <div class="sec-head reveal">
+        <span class="badge badge-blue"><svg width="13" height="13"><use href="#i-net"/></svg> Agent workflow</span>
+        <h2>How it works</h2>
+        <p>A coordinated team of AI agents processes your report in seconds.</p>
+      </div>
+      <div class="flow">
+        <div class="flow-step reveal"><div class="flow-num"><svg><use href="#i-upload"/></svg></div><div class="flow-body"><h4>Upload</h4><p>Drop in your medical report — PDF, image or DOCX.</p></div></div>
+        <div class="flow-step reveal" data-d="1"><div class="flow-num"><svg><use href="#i-scan"/></svg></div><div class="flow-body"><h4>Document Analysis</h4><p>Azure Document Intelligence extracts text, tables and values.</p></div></div>
+        <div class="flow-step reveal" data-d="2"><div class="flow-num"><svg><use href="#i-net"/></svg></div><div class="flow-body"><h4>AI Agent Collaboration</h4><p>The Orchestrator dispatches specialist agents in parallel.</p></div></div>
+        <div class="flow-step reveal" data-d="1"><div class="flow-num"><svg><use href="#i-spark"/></svg></div><div class="flow-body"><h4>Medical Summary</h4><p>Findings are rewritten in clear, patient-friendly language.</p></div></div>
+        <div class="flow-step reveal" data-d="2"><div class="flow-num"><svg><use href="#i-chat"/></svg></div><div class="flow-body"><h4>Questions</h4><p>Smart discussion points are generated for your doctor visit.</p></div></div>
+        <div class="flow-step reveal" data-d="1"><div class="flow-num"><svg><use href="#i-translate"/></svg></div><div class="flow-body"><h4>Translation</h4><p>Everything is translated into Malay, Chinese and Japanese.</p></div></div>
+        <div class="flow-step reveal" data-d="2"><div class="flow-num" style="background:var(--grad-azure);color:#fff;border:none"><svg><use href="#i-check"/></svg></div><div class="flow-body"><h4>Completed</h4><p>Your full report briefing is ready — referenced and sourced.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="agents" style="padding-bottom:30px">
+    <div class="sec-head reveal">
+      <span class="badge badge-teal"><svg width="13" height="13"><use href="#i-bot"/></svg> Not a chatbot</span>
+      <h2>A workspace of specialist AI agents</h2>
+      <p>Each agent has one job and does it brilliantly — orchestrated together on Azure.</p>
+    </div>
+    <div class="hero-actions reveal" style="justify-content:center">
+      <button class="btn btn-primary" onclick="enterApp()"><svg><use href="#i-bot"/></svg> Meet the Agents</button>
+    </div>
+  </section>
+
+  <section class="cta-band reveal" id="about">
+    <h2>Upload. Understand. Prepare.</h2>
+    <p>Walk into your next appointment with clarity and confidence. MediCare AI never diagnoses — it empowers.</p>
+    <button class="btn btn-white" onclick="enterApp()"><svg><use href="#i-upload"/></svg> Try the AI Workspace — Free</button>
+  </section>
+
+  <footer id="contact">
+    <div class="foot">
+      <div>
+        <a class="logo" style="font-size:16px;margin-bottom:10px"><span class="logo-mark" style="width:30px;height:30px;border-radius:9px"><svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3 12h4l2.5-7 4 14 2.5-7h5"/></svg></span> MediCare AI</a>
+        <small>⚕️ MediCare AI is an educational tool and does not provide medical diagnoses or treatment advice. Always consult a qualified healthcare professional. © 2026 MediCare AI · Built with Microsoft Azure.</small>
+      </div>
+      <div class="foot-links"><a href="#features">Features</a><a href="#how">How it works</a><a href="#" onclick="return false">Privacy</a><a href="#" onclick="return false">Terms</a><a href="mailto:hello@medicare.ai">Contact</a></div>
+    </div>
+  </footer>
+</div>
+<!-- ================= APP / WORKSPACE ================= -->
+<div id="app">
+  <aside class="sidebar" aria-label="Workspace navigation">
+    <a class="sb-logo" href="#" onclick="exitApp();return false" title="Back to landing page">
+      <span class="logo-mark"><svg fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3 12h4l2.5-7 4 14 2.5-7h5"/></svg></span>
+      MediCare&nbsp;AI
+    </a>
+    <button class="sb-item active" data-view="dashboard"><svg><use href="#i-grid"/></svg> Dashboard</button>
+    <button class="sb-item" data-view="dashboard" data-scroll="upload"><svg><use href="#i-upload"/></svg> Upload</button>
+    <button class="sb-item" data-view="history"><svg><use href="#i-clock"/></svg> History</button>
+    <button class="sb-item" data-view="agents"><svg><use href="#i-bot"/></svg> AI Agents</button>
+    <button class="sb-item" data-view="knowledge"><svg><use href="#i-book"/></svg> Knowledge Base</button>
+    <div class="sb-sep" role="separator"></div>
+    <button class="sb-item" data-view="settings"><svg><use href="#i-settings"/></svg> Settings</button>
+    <button class="sb-item" data-view="profile"><svg><use href="#i-user"/></svg> Profile</button>
+    <div class="sb-foot">
+      <div class="sb-azure">
+        <b><span class="dot pulse" style="background:var(--success)"></span> Azure Connected</b>
+        <small>East Asia · AI Foundry · all systems operational</small>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="search" role="search">
+        <svg><use href="#i-search"/></svg>
+        <input id="globalSearch" type="search" placeholder="Search reports, terms, agents…" aria-label="Search workspace">
+        <kbd>Ctrl K</kbd>
+      </div>
+      <div class="tb-right">
+        <span class="badge badge-green tb-status"><span class="dot pulse" style="background:var(--success)"></span> Azure Connected</span>
+        <button class="icon-btn" id="darkBtn" aria-label="Toggle dark mode" onclick="toggleDark()"><svg><use href="#i-moon"/></svg></button>
+        <button class="icon-btn" aria-label="Notifications" onclick="toast('3 notifications — analysis complete, weekly digest, new reference added')"><svg><use href="#i-bell"/></svg><span class="nbadge"></span></button>
+        <button class="avatar" aria-label="Profile" data-view="profile" style="cursor:pointer">KF</button>
+      </div>
+    </div>
+
+    <!-- ====== DASHBOARD VIEW ====== -->
+    <section class="view active" id="view-dashboard" aria-label="Dashboard">
+      <div class="view-head">
+        <div>
+          <h1>Good morning, Kiff 👋</h1>
+          <div class="vh-sub">Upload a medical report and your AI agent team will take it from there.</div>
+        </div>
+        <span class="badge badge-blue"><svg width="13" height="13"><use href="#i-spark"/></svg> 7 agents online</span>
+      </div>
+
+      <div class="stats">
+        <div class="card stat lift"><span class="s-ic" style="background:rgba(0,120,212,.1);color:var(--azure)"><svg><use href="#i-doc"/></svg></span><div><b>12</b><small>Reports analyzed</small></div></div>
+        <div class="card stat lift"><span class="s-ic" style="background:rgba(0,183,195,.12);color:#00838C"><svg><use href="#i-book"/></svg></span><div><b>87</b><small>Terms explained</small></div></div>
+        <div class="card stat lift"><span class="s-ic" style="background:rgba(107,91,210,.12);color:#6B5BD2"><svg><use href="#i-chat"/></svg></span><div><b>46</b><small>Questions generated</small></div></div>
+        <div class="card stat lift"><span class="s-ic" style="background:rgba(22,198,12,.12);color:var(--success-dark)"><svg><use href="#i-globe"/></svg></span><div><b>4</b><small>Languages active</small></div></div>
+      </div>
+
+      <div class="error-banner" id="uploadError" role="alert">
+        <svg><use href="#i-warn"/></svg>
+        <div><b id="uploadErrorTitle">Unsupported file type</b><span id="uploadErrorMsg">Please upload a PDF, PNG, JPEG or DOCX file (max 25 MB).</span></div>
+        <button class="btn btn-sm btn-secondary" onclick="document.getElementById('uploadError').classList.remove('show')">Dismiss</button>
+      </div>
+
+      <div id="uploadWrap">
+        <div class="upload-zone" id="uploadZone" tabindex="0" role="button"
+             aria-label="Upload medical report. Drag and drop, or press Enter to browse files.">
+          <div class="uz-icon"><svg><use href="#i-upload"/></svg></div>
+          <h3>Upload Medical Report</h3>
+          <p>Drag &amp; drop your file here, or <u>browse files</u> · Blood tests, CT, MRI, screenings &amp; summaries</p>
+          <div class="uz-formats"><span>PDF</span><span>PNG</span><span>JPEG</span><span>DOCX</span></div>
+          <div class="uz-privacy"><svg><use href="#i-shield"/></svg> Encrypted in transit &amp; at rest · processed on Microsoft Azure · never used for training</div>
+          <input type="file" id="fileInput" accept=".pdf,.png,.jpg,.jpeg,.docx" hidden>
+        </div>
+        <p style="text-align:center;margin-top:14px;font-size:13px;color:var(--text-3)">No file handy? <button class="btn-ghost" style="color:var(--azure);font-weight:600;padding:2px 6px" onclick="startDemo()">Run a live demo with a sample blood test →</button></p>
+      </div>
+
+      <!-- Processing pipeline -->
+      <div class="card pipeline" id="pipeline" aria-live="polite">
+        <div class="pl-head">
+          <div class="spinner"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="18"/><circle class="arc" cx="22" cy="22" r="18"/></svg></div>
+          <div>
+            <h3 id="plTitle">Analyzing Blood_Test_Report.pdf</h3>
+            <p id="plSub">Orchestrator is coordinating 7 AI agents <span class="thinking-dots"><i></i><i></i><i></i></span></p>
+          </div>
+          <span class="pl-pct" id="plPct">0%</span>
+        </div>
+        <div class="pl-bar"><i id="plBar"></i></div>
+        <div class="pl-steps" id="plSteps">
+          <div class="pl-step" data-step="0"><span class="ps-ic"><svg><use href="#i-upload"/></svg></span><div><b>Uploading</b><small>Secure transfer to Azure Blob Storage</small></div><span class="ps-state">Queued</span></div>
+          <div class="pl-step" data-step="1"><span class="ps-ic"><svg><use href="#i-scan"/></svg></span><div><b>Extracting Text</b><small>Azure Document Intelligence OCR</small></div><span class="ps-state">Queued</span></div>
+          <div class="pl-step" data-step="2"><span class="ps-ic"><svg><use href="#i-doc"/></svg></span><div><b>Reading Report</b><small>Report Reader agent · identifying findings &amp; values</small></div><span class="ps-state">Queued</span></div>
+          <div class="pl-step" data-step="3"><span class="ps-ic"><svg><use href="#i-spark"/></svg></span><div><b>Medical Simplifier Working</b><small>Rewriting clinical language in plain English</small></div><span class="ps-state">Queued</span></div>
+          <div class="pl-step" data-step="4"><span class="ps-ic"><svg><use href="#i-book"/></svg></span><div><b>Research Agent Working</b><small>Foundry IQ · grounding findings in WHO · NIH · MOH sources</small></div><span class="ps-state">Queued</span></div>
+          <div class="pl-step" data-step="5"><span class="ps-ic"><svg><use href="#i-net"/></svg></span><div><b>Reasoning Agent Working</b><small>Multi-step reasoning · cross-checking findings against guidelines</small></div><span class="ps-state">Queued</span></div>
+          <div class="pl-step" data-step="6"><span class="ps-ic"><svg><use href="#i-chat"/></svg></span><div><b>Question Generator Working</b><small>Creating personalized appointment questions</small></div><span class="ps-state">Queued</span></div>
+          <div class="pl-step" data-step="7"><span class="ps-ic"><svg><use href="#i-translate"/></svg></span><div><b>Translation Agent Working</b><small>Malay · Chinese · Japanese</small></div><span class="ps-state">Queued</span></div>
+          <div class="pl-step" data-step="8"><span class="ps-ic"><svg><use href="#i-check"/></svg></span><div><b>Final Summary Ready</b><small>Compiled, referenced &amp; quality-checked</small></div><span class="ps-state">Queued</span></div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="results" id="results">
+        <div class="res-banner">
+          <span class="rb-ic"><svg><use href="#i-check"/></svg></span>
+          <div><b>Analysis complete — Blood_Test_Report.pdf</b><span>9 steps · 7 agents · 16.0s · grounded via Foundry IQ in 4 trusted sources</span></div>
+          <button class="btn btn-secondary btn-sm" onclick="resetDashboard()"><svg><use href="#i-upload"/></svg> Analyze another report</button>
+        </div>
+
+        <div class="res-grid">
+          <article class="card lift rcard" style="grid-column:1/-1">
+            <div class="rc-head">
+              <span class="rc-ic" style="background:var(--grad-azure)"><svg><use href="#i-spark"/></svg></span>
+              <div><h3>Executive Summary</h3><small>Medical Simplifier · plain-English explanation</small></div>
+              <div class="rc-act"><button class="icon-btn" aria-label="Copy summary" onclick="copyText('summaryText')"><svg><use href="#i-copy"/></svg></button></div>
+            </div>
+            <p class="body" id="summaryText">Overall, your blood test looks <b>mostly healthy</b>. Your blood sugar control and kidney function are well within normal ranges. Two areas deserve attention: your <b>hemoglobin is slightly low</b>, which can mean your body has less iron than it would like — this often explains tiredness — and your <b>LDL ("bad") cholesterol is mildly elevated</b>, something usually improved with diet and exercise. Neither finding is an emergency, but both are worth discussing with your doctor at your next visit.</p>
+          </article>
+
+          <article class="card lift rcard" style="grid-column:1/-1" id="traceCard">
+            <div class="rc-head">
+              <span class="rc-ic" style="background:linear-gradient(135deg,#5E4FC2,#00B7C3)"><svg><use href="#i-net"/></svg></span>
+              <div><h3>Reasoning Trace</h3><small>Reasoning Agent · how this conclusion was reached, step by step</small></div>
+              <span class="badge badge-teal" style="margin-left:auto">Foundry IQ grounded</span>
+            </div>
+            <div class="finding"><span class="fi-ic" style="background:rgba(0,120,212,.1);color:var(--azure)"><b style="font-size:13px">1</b></span><div><b>Observe</b><small>Hemoglobin 11.2 g/dL sits below the 13.0–17.0 reference range; MCV is also low → red cells are smaller than normal (microcytic).</small></div></div>
+            <div class="finding"><span class="fi-ic" style="background:rgba(0,120,212,.1);color:var(--azure)"><b style="font-size:13px">2</b></span><div><b>Hypothesize</b><small>Low Hb + microcytic cells → iron deficiency is the most likely pattern. B12/folate deficiency is unlikely — that usually makes cells larger, not smaller.</small></div></div>
+            <div class="finding"><span class="fi-ic" style="background:rgba(0,183,195,.12);color:#00838C"><b style="font-size:13px">3</b></span><div><b>Retrieve — Foundry IQ</b><small>Queried grounded knowledge sources: WHO anaemia thresholds confirm 11.2 g/dL classifies as "mild" (11.0–12.9). Citation attached to the summary.</small></div></div>
+            <div class="finding"><span class="fi-ic" style="background:rgba(0,120,212,.1);color:var(--azure)"><b style="font-size:13px">4</b></span><div><b>Cross-check</b><small>eGFR 96 is normal → kidney-related anemia pathway ruled out. HbA1c normal → no diabetes interaction to consider.</small></div></div>
+            <div class="finding"><span class="fi-ic" style="background:rgba(22,198,12,.12);color:var(--success-dark)"><b style="font-size:13px">5</b></span><div><b>Conclude</b><small>Pattern is consistent with mild iron deficiency — not urgent, worth confirming. Generated the ferritin-test question and routed all wording through the Safety Reviewer (no diagnostic claims).</small></div></div>
+          </article>
+          <article class="card lift rcard" id="findingsCard">
+            <div class="rc-head">
+              <span class="rc-ic" style="background:linear-gradient(135deg,#D13438,#FF7A45)"><svg><use href="#i-pulse"/></svg></span>
+              <div><h3>Medical Findings</h3><small>Report Reader · 4 key values flagged</small></div>
+            </div>
+            <div class="finding"><span class="fi-ic" style="background:rgba(255,185,0,.15);color:var(--warning-dark)"><svg><use href="#i-drop"/></svg></span><div><b>Hemoglobin — 11.2 g/dL <span class="badge badge-amber" style="padding:2px 9px;font-size:10.5px">Slightly low</span></b><small>Below the typical range (13.0–17.0). May indicate mild iron-deficiency anemia.</small></div></div>
+            <div class="finding"><span class="fi-ic" style="background:rgba(255,185,0,.15);color:var(--warning-dark)"><svg><use href="#i-heart"/></svg></span><div><b>LDL Cholesterol — 3.9 mmol/L <span class="badge badge-amber" style="padding:2px 9px;font-size:10.5px">Mildly elevated</span></b><small>Above the recommended &lt;3.4. Often managed with lifestyle changes first.</small></div></div>
+            <div class="finding"><span class="fi-ic" style="background:rgba(22,198,12,.12);color:var(--success-dark)"><svg><use href="#i-flask"/></svg></span><div><b>HbA1c — 5.4% <span class="badge badge-green" style="padding:2px 9px;font-size:10.5px">Normal</span></b><small>Excellent 3-month blood sugar control. No sign of diabetes.</small></div></div>
+            <div class="finding"><span class="fi-ic" style="background:rgba(22,198,12,.12);color:var(--success-dark)"><svg><use href="#i-kidney"/></svg></span><div><b>eGFR — 96 mL/min <span class="badge badge-green" style="padding:2px 9px;font-size:10.5px">Normal</span></b><small>Your kidneys are filtering blood at a healthy rate.</small></div></div>
+          </article>
+
+          <article class="card lift rcard">
+            <div class="rc-head">
+              <span class="rc-ic" style="background:linear-gradient(135deg,#6B5BD2,#4CC2FF)"><svg><use href="#i-book"/></svg></span>
+              <div><h3>Medical Terms</h3><small>Medical Dictionary · tap a term to expand</small></div>
+            </div>
+            <div class="term-chips" id="termChips" role="list"></div>
+            <div class="term-detail" id="termDetail" aria-live="polite"></div>
+          </article>
+
+          <article class="card lift rcard" style="grid-column:1/-1" id="bodyCard">
+            <div class="rc-head">
+              <span class="rc-ic" style="background:linear-gradient(135deg,#0078D4,#16C60C)"><svg><use href="#i-user"/></svg></span>
+              <div><h3>Body Map</h3><small>Where this report's findings live — tap an organ</small></div>
+            </div>
+            <div class="bm-wrap">
+              <div class="bm-svg" aria-hidden="true">
+                <svg viewBox="0 0 200 400">
+                  <circle class="bm-body" cx="100" cy="40" r="27"/>
+                  <rect class="bm-body" x="62" y="74" width="76" height="148" rx="34"/>
+                  <rect class="bm-body" x="34" y="84" width="22" height="112" rx="11"/>
+                  <rect class="bm-body" x="144" y="84" width="22" height="112" rx="11"/>
+                  <rect class="bm-body" x="70" y="226" width="26" height="120" rx="13"/>
+                  <rect class="bm-body" x="104" y="226" width="26" height="120" rx="13"/>
+                  <g class="bm-organ" data-bm="brain"><circle class="halo" cx="100" cy="38" r="11" fill="rgba(22,198,12,.3)"/><ellipse class="core" cx="100" cy="38" rx="13" ry="10" fill="#16C60C"/></g>
+                  <g class="bm-organ" data-bm="heart"><circle class="halo" cx="104" cy="118" r="11" fill="rgba(255,185,0,.35)"/><circle class="core" cx="104" cy="118" r="10" fill="#FFB900"/></g>
+                  <g class="bm-organ" data-bm="blood"><circle class="halo" cx="100" cy="168" r="11" fill="rgba(255,185,0,.35)"/><path class="core" d="M100 158c5 6.5 8 10 8 14a8 8 0 0 1-16 0c0-4 3-7.5 8-14z" fill="#FFB900"/></g>
+                  <g class="bm-organ" data-bm="kidneys"><circle class="halo" cx="100" cy="198" r="11" fill="rgba(22,198,12,.3)"/><ellipse class="core" cx="88" cy="198" rx="7" ry="9" fill="#16C60C"/><ellipse class="core" cx="112" cy="198" rx="7" ry="9" fill="#16C60C"/></g>
+                </svg>
+              </div>
+              <div class="bm-list" id="bmList" role="list"></div>
+            </div>
+          </article>
+          <article class="card lift rcard">
+            <div class="rc-head">
+              <span class="rc-ic" style="background:linear-gradient(135deg,#0078D4,#6B5BD2)"><svg><use href="#i-chat"/></svg></span>
+              <div><h3>Doctor Questions</h3><small>Question Generator · bring these to your visit</small></div>
+              <div class="rc-act"><button class="icon-btn" aria-label="Copy all questions" onclick="copyQuestions()"><svg><use href="#i-copy"/></svg></button></div>
+            </div>
+            <div id="qList"></div>
+          </article>
+
+          <article class="card lift rcard">
+            <div class="rc-head">
+              <span class="rc-ic" style="background:linear-gradient(135deg,#00B7C3,#0078D4)"><svg><use href="#i-translate"/></svg></span>
+              <div><h3>Translation</h3><small>Translation Agent · Azure AI Translator</small></div>
+              <div class="rc-act"><button class="icon-btn" id="listenBtn" aria-label="Read summary aloud" title="Listen" onclick="speakSummary()"><svg><use href="#i-speaker"/></svg></button></div>
+            </div>
+            <div class="tabs" role="tablist" id="langTabs">
+              <button class="tab active" role="tab" aria-selected="true" data-lang="en">English</button>
+              <button class="tab" role="tab" aria-selected="false" data-lang="ms">Melayu</button>
+              <button class="tab" role="tab" aria-selected="false" data-lang="zh">中文</button>
+              <button class="tab" role="tab" aria-selected="false" data-lang="ja">日本語</button>
+            </div>
+            <p class="trans-body" id="transBody" lang="en"></p>
+          </article>
+
+          <article class="card lift rcard" style="grid-column:1/-1">
+            <div class="rc-head">
+              <span class="rc-ic" style="background:linear-gradient(135deg,#107C10,#00B7C3)"><svg><use href="#i-shield"/></svg></span>
+              <div><h3>Trusted References</h3><small id="refsSub">Research Agent · retrieved via Foundry IQ with citations</small></div>
+            </div>
+            <div id="refsGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px">
+              <a class="refitem" href="#" onclick="toast('Opens WHO anaemia guideline (demo)');return false"><span class="ref-ic" style="background:#0B5394">WHO</span><div><b>Anaemia in adults — overview</b><small>World Health Organization · Fact sheet</small></div><div class="conf"><b>97%</b><div class="conf-bar"><i style="width:97%"></i></div></div></a>
+              <a class="refitem" href="#" onclick="toast('Opens NIH cholesterol guide (demo)');return false"><span class="ref-ic" style="background:#1F6B2E">NIH</span><div><b>Blood cholesterol: what it means</b><small>National Institutes of Health · MedlinePlus</small></div><div class="conf"><b>95%</b><div class="conf-bar"><i style="width:95%"></i></div></div></a>
+              <a class="refitem" href="#" onclick="toast('Opens MOH screening guideline (demo)');return false"><span class="ref-ic" style="background:#8F1D7B">MOH</span><div><b>Health screening guidelines 2025</b><small>Ministry of Health · Clinical guideline</small></div><div class="conf"><b>93%</b><div class="conf-bar"><i style="width:93%"></i></div></div></a>
+              <a class="refitem" href="#" onclick="toast('Opens journal article (demo)');return false"><span class="ref-ic" style="background:#5E4FC2">DOI</span><div><b>Iron deficiency without anaemia</b><small>The Lancet · Peer-reviewed journal, 2024</small></div><div class="conf"><b>89%</b><div class="conf-bar"><i style="width:89%"></i></div></div></a>
+            </div>
+          </article>
+        </div>
+
+        <div class="disclaimer">
+          <svg><use href="#i-warn"/></svg>
+          <div><b>MediCare AI does not diagnose disease.</b> These explanations are educational and generated by AI — they may contain errors and are not a substitute for professional medical advice. Always discuss your results with a qualified healthcare professional.</div>
+        </div>
+      </div>
+    </section>
+    <!-- ====== AGENTS VIEW ====== -->
+    <section class="view" id="view-agents" aria-label="AI Agents">
+      <div class="view-head">
+        <div><h1>AI Agents</h1><div class="vh-sub">Your specialist agent team, orchestrated live on Azure AI Foundry.</div></div>
+        <span class="badge badge-green"><span class="dot pulse" style="background:var(--success)"></span> Live collaboration</span>
+      </div>
+      <div class="agents-grid" id="agentsGrid">
+        <svg id="agentWires" aria-hidden="true"></svg>
+        <article class="card lift agent-card orch">
+          <div class="ag-top">
+            <span class="ag-av" style="background:rgba(255,255,255,.16);box-shadow:none"><svg><use href="#i-net"/></svg><span class="ag-live"></span></span>
+            <div><h3>Orchestrator</h3><small style="color:rgba(255,255,255,.6)">Semantic Kernel · GPT-4o</small></div>
+            <span class="badge" style="margin-left:auto;background:rgba(94,224,138,.18);color:#7CF0A8"><span class="dot pulse" style="background:#5EE08A"></span> Online</span>
+          </div>
+          <p class="ag-task">Managing all AI agents — routing the document, sequencing specialists, merging results and running safety &amp; quality checks before anything reaches you.</p>
+          <div class="ag-prog"><i style="width:100%"></i></div>
+          <div class="ag-meta"><span>6 agents supervised</span><span>Uptime 99.99%</span></div>
+          <div class="ag-pulseline"></div>
+        </article>
+
+        <article class="card lift agent-card">
+          <div class="ag-top"><span class="ag-av" style="background:var(--azure)"><svg><use href="#i-scan"/></svg><span class="ag-live"></span></span><div><h3>Report Reader</h3><small>Azure Document Intelligence</small></div></div>
+          <p class="ag-task">Reading the uploaded document — extracting values, tables, units and reference ranges.</p>
+          <span class="badge badge-blue" style="margin-bottom:14px"><span class="thinking-dots"><i></i><i></i><i></i></span> Working</span>
+          <div class="ag-prog"><i class="ag-w" style="width:78%"></i></div>
+          <div class="ag-meta"><span>Page 2 of 2</span><span>78%</span></div>
+          <div class="ag-pulseline"></div>
+        </article>
+
+        <article class="card lift agent-card">
+          <div class="ag-top"><span class="ag-av" style="background:var(--accent)"><svg><use href="#i-spark"/></svg><span class="ag-live"></span></span><div><h3>Medical Simplifier</h3><small>Azure OpenAI · fine-tuned</small></div></div>
+          <p class="ag-task">Converting medical language into clear, warm, patient-friendly explanations.</p>
+          <span class="badge badge-blue" style="margin-bottom:14px"><span class="thinking-dots"><i></i><i></i><i></i></span> Working</span>
+          <div class="ag-prog"><i class="ag-w" style="width:64%"></i></div>
+          <div class="ag-meta"><span>11 terms simplified</span><span>64%</span></div>
+          <div class="ag-pulseline"></div>
+        </article>
+
+        <article class="card lift agent-card">
+          <div class="ag-top"><span class="ag-av" style="background:#0B6F86"><svg><use href="#i-book"/></svg><span class="ag-live"></span></span><div><h3>Research Agent</h3><small>Foundry IQ · agentic retrieval</small></div></div>
+          <p class="ag-task">Searching trusted references — WHO, NIH, MOH and peer-reviewed journals.</p>
+          <span class="badge badge-blue" style="margin-bottom:14px"><span class="thinking-dots"><i></i><i></i><i></i></span> Working</span>
+          <div class="ag-prog"><i class="ag-w" style="width:52%"></i></div>
+          <div class="ag-meta"><span>4 sources verified</span><span>52%</span></div>
+          <div class="ag-pulseline"></div>
+        </article>
+
+        <article class="card lift agent-card">
+          <div class="ag-top"><span class="ag-av" style="background:#5E4FC2"><svg><use href="#i-net"/></svg><span class="ag-live"></span></span><div><h3>Reasoning Agent</h3><small>Azure OpenAI o-series · Foundry Agent Service</small></div></div>
+          <p class="ag-task">Multi-step clinical reasoning — chaining findings, ruling out alternatives and cross-checking guidelines before any conclusion.</p>
+          <span class="badge badge-blue" style="margin-bottom:14px"><span class="thinking-dots"><i></i><i></i><i></i></span> Working</span>
+          <div class="ag-prog"><i class="ag-w" style="width:58%"></i></div>
+          <div class="ag-meta"><span>Step 3 of 5 · verifying</span><span>58%</span></div>
+          <div class="ag-pulseline"></div>
+        </article>
+        <article class="card lift agent-card">
+          <div class="ag-top"><span class="ag-av" style="background:#6B5BD2"><svg><use href="#i-chat"/></svg><span class="ag-live"></span></span><div><h3>Question Generator</h3><small>Azure OpenAI · reasoning</small></div></div>
+          <p class="ag-task">Creating appointment questions personalized to this report's findings.</p>
+          <span class="badge badge-blue" style="margin-bottom:14px"><span class="thinking-dots"><i></i><i></i><i></i></span> Working</span>
+          <div class="ag-prog"><i class="ag-w" style="width:41%"></i></div>
+          <div class="ag-meta"><span>3 of 5 questions</span><span>41%</span></div>
+          <div class="ag-pulseline"></div>
+        </article>
+
+        <article class="card lift agent-card">
+          <div class="ag-top"><span class="ag-av" style="background:#C2497B"><svg><use href="#i-translate"/></svg><span class="ag-live"></span></span><div><h3>Translation Agent</h3><small>Azure AI Translator</small></div></div>
+          <p class="ag-task">Translating content into Bahasa Melayu, Chinese and Japanese with medical accuracy.</p>
+          <span class="badge badge-blue" style="margin-bottom:14px"><span class="thinking-dots"><i></i><i></i><i></i></span> Working</span>
+          <div class="ag-prog"><i class="ag-w" style="width:33%"></i></div>
+          <div class="ag-meta"><span>MY done · 中文 in progress</span><span>33%</span></div>
+          <div class="ag-pulseline"></div>
+        </article>
+
+        <article class="card lift agent-card">
+          <div class="ag-top"><span class="ag-av" style="background:#107C10"><svg><use href="#i-shield"/></svg><span class="ag-live"></span></span><div><h3>Safety Reviewer</h3><small>Azure AI Content Safety</small></div></div>
+          <p class="ag-task">Checking every output for diagnostic language — explanations only, never diagnoses.</p>
+          <span class="badge badge-green" style="margin-bottom:14px"><span class="dot" style="background:var(--success)"></span> Standing by</span>
+          <div class="ag-prog"><i style="width:100%;background:linear-gradient(90deg,#16C60C,#00B7C3)"></i></div>
+          <div class="ag-meta"><span>0 violations found</span><span>Ready</span></div>
+          <div class="ag-pulseline"></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ====== HISTORY VIEW ====== -->
+    <section class="view" id="view-history" aria-label="History">
+      <div class="view-head">
+        <div><h1>History</h1><div class="vh-sub">Every report you've analyzed, in one timeline.</div></div>
+        <button class="btn btn-secondary btn-sm" onclick="toast('Exported history as CSV (demo)')"><svg><use href="#i-download"/></svg> Export all</button>
+      </div>
+      <div class="filter-row">
+        <div class="search"><svg><use href="#i-search"/></svg><input id="histSearch" type="search" placeholder="Search documents…" aria-label="Search history"></div>
+        <label class="select"><svg width="15" height="15" style="color:var(--text-3)"><use href="#i-doc"/></svg>
+          <select id="histType" aria-label="Filter by document type"><option value="">All types</option><option>Blood Test</option><option>MRI</option><option>CT Scan</option><option>Screening</option><option>Summary</option></select>
+        </label>
+        <label class="select"><svg width="15" height="15" style="color:var(--text-3)"><use href="#i-check"/></svg>
+          <select id="histStatus" aria-label="Filter by status"><option value="">All statuses</option><option>Completed</option><option>Processing</option><option>Failed</option></select>
+        </label>
+      </div>
+      <div class="hist-list" id="histList"></div>
+      <div class="empty" id="histEmpty">
+        <div class="em-ic"><svg><use href="#i-search"/></svg></div>
+        <h3>No results found</h3>
+        <p>Nothing matches your search or filters. Try a different keyword or clear the filters.</p>
+        <button class="btn btn-secondary btn-sm" onclick="clearHistFilters()">Clear filters</button>
+      </div>
+    </section>
+
+    <!-- ====== KNOWLEDGE VIEW ====== -->
+    <section class="view" id="view-knowledge" aria-label="Knowledge Base">
+      <div class="view-head">
+        <div><h1>Knowledge Base</h1><div class="vh-sub">Plain-language medical topics, explained by AI and grounded in trusted sources.</div></div>
+      </div>
+      <div class="kb-grid" id="kbGrid"></div>
+    </section>
+
+    <!-- ====== PROFILE VIEW ====== -->
+    <section class="view" id="view-profile" aria-label="Profile">
+      <div class="view-head"><div><h1>Profile</h1><div class="vh-sub">Your account, activity and preferences.</div></div></div>
+      <div class="profile-grid">
+        <div class="card profile-card">
+          <div class="avatar">KF</div>
+          <h2>Kiff</h2>
+          <div class="p-mail">kiff@example.com</div>
+          <span class="badge badge-blue"><svg width="13" height="13"><use href="#i-shield"/></svg> Privacy-first account</span>
+          <div class="p-stats">
+            <div><b>12</b><small>Reports</small></div>
+            <div><b>46</b><small>Questions</small></div>
+            <div><b>4</b><small>Languages</small></div>
+          </div>
+        </div>
+        <div>
+          <div class="card set-group">
+            <h3>Recent uploads</h3>
+            <div class="set-row"><svg width="18" height="18" style="color:var(--azure)"><use href="#i-doc"/></svg><div><b>Blood_Test_Report.pdf</b><small>Analyzed today · 4 findings</small></div><button class="btn btn-sm btn-secondary set-ctl" data-view="dashboard">View</button></div>
+            <div class="set-row"><svg width="18" height="18" style="color:#6B5BD2"><use href="#i-brain"/></svg><div><b>MRI_Brain_Summary.pdf</b><small>May 28 · 2 findings</small></div><button class="btn btn-sm btn-secondary set-ctl" onclick="toast('Opening archived analysis (demo)')">View</button></div>
+            <div class="set-row"><svg width="18" height="18" style="color:#00838C"><use href="#i-pulse"/></svg><div><b>Annual_Screening_2026.docx</b><small>May 12 · all normal</small></div><button class="btn btn-sm btn-secondary set-ctl" onclick="toast('Opening archived analysis (demo)')">View</button></div>
+          </div>
+          <div class="card set-group">
+            <h3>Preferences</h3>
+            <div class="set-row"><div><b>Default language</b><small>Used for summaries and translations</small></div>
+              <label class="select set-ctl"><select aria-label="Default language"><option>English</option><option>Bahasa Melayu</option><option>中文</option><option>日本語</option></select></label></div>
+            <div class="set-row"><div><b>Notifications</b><small>Email me when an analysis completes</small></div>
+              <button class="toggle set-ctl" role="switch" aria-checked="true" aria-label="Toggle notifications" onclick="flipToggle(this)"></button></div>
+            <div class="set-row"><div><b>Larger text &amp; high contrast</b><small>Accessibility display mode</small></div>
+              <button class="toggle set-ctl" role="switch" aria-checked="false" aria-label="Toggle accessibility mode" onclick="flipToggle(this)"></button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== SETTINGS VIEW ====== -->
+    <section class="view" id="view-settings" aria-label="Settings">
+      <div class="view-head"><div><h1>Settings</h1><div class="vh-sub">Workspace, security and data controls.</div></div></div>
+      <div style="max-width:760px">
+        <div class="card set-group">
+          <h3>Appearance</h3>
+          <div class="set-row"><div><b>Dark mode</b><small>Switch the workspace to a dark theme</small></div>
+            <button class="toggle set-ctl" id="darkToggle" role="switch" aria-checked="false" aria-label="Toggle dark mode" onclick="toggleDark()"></button></div>
+          <div class="set-row"><div><b>Reduced motion</b><small>Minimize animations across the workspace</small></div>
+            <button class="toggle set-ctl" role="switch" aria-checked="false" aria-label="Toggle reduced motion" onclick="flipToggle(this)"></button></div>
+        </div>
+        <div class="card set-group">
+          <h3>Security &amp; privacy</h3>
+          <div class="set-row"><div><b>Two-factor authentication</b><small>Protect your account with Microsoft Authenticator</small></div>
+            <button class="toggle set-ctl" role="switch" aria-checked="true" aria-label="Toggle two-factor authentication" onclick="flipToggle(this)"></button></div>
+          <div class="set-row"><div><b>Auto-delete documents</b><small>Remove uploads from Azure storage after 30 days</small></div>
+            <button class="toggle set-ctl" role="switch" aria-checked="true" aria-label="Toggle auto delete" onclick="flipToggle(this)"></button></div>
+          <div class="set-row"><div><b>Download my data</b><small>Export all analyses and uploads</small></div>
+            <button class="btn btn-sm btn-secondary set-ctl" onclick="toast('Preparing your data export (demo)')"><svg><use href="#i-download"/></svg> Export</button></div>
+          <div class="set-row"><div><b style="color:var(--error)">Delete all data</b><small>Permanently erase your documents and history</small></div>
+            <button class="btn btn-sm btn-secondary set-ctl" style="color:var(--error);border-color:#F0C6C8" onclick="toast('Deletion requires email confirmation (demo)')"><svg><use href="#i-trash"/></svg> Delete</button></div>
+        </div>
+        <div class="card set-group">
+          <h3>Azure connection</h3>
+          <div class="set-row"><div><b>Region</b><small>Where your documents are processed</small></div>
+            <label class="select set-ctl"><select aria-label="Azure region"><option>East Asia</option><option>Southeast Asia</option><option>West Europe</option><option>East US</option></select></label></div>
+          <div class="set-row"><div><b>Service health</b><small>Document Intelligence · OpenAI · Translator · AI Search</small></div>
+            <span class="badge badge-green set-ctl"><span class="dot pulse" style="background:var(--success)"></span> All operational</span></div>
+          <div class="set-row"><div><b>Error state preview</b><small>QA tool — preview the elegant error components</small></div>
+            <div class="set-ctl" style="display:flex;gap:6px;flex-wrap:wrap">
+              <button class="btn btn-sm btn-secondary" onclick="previewError('upload')">Upload failed</button>
+              <button class="btn btn-sm btn-secondary" onclick="previewError('network')">Network error</button>
+              <button class="btn btn-sm btn-secondary" onclick="previewError('azure')">Azure unavailable</button>
+            </div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <nav class="mobile-tabs" aria-label="Mobile navigation">
+    <button class="active" data-view="dashboard"><svg><use href="#i-grid"/></svg>Home</button>
+    <button data-view="history"><svg><use href="#i-clock"/></svg>History</button>
+    <button data-view="agents"><svg><use href="#i-bot"/></svg>Agents</button>
+    <button data-view="knowledge"><svg><use href="#i-book"/></svg>Learn</button>
+    <button data-view="profile"><svg><use href="#i-user"/></svg>Profile</button>
+  </nav>
+</div>
+<!-- ================= OVERLAYS ================= -->
+<div id="toasts" aria-live="polite"></div>
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h3 id="modalTitle"></h3>
+    <div class="m-sub" id="modalSub"></div>
+    <p class="m-body" id="modalBody"></p>
+    <div class="m-actions">
+      <button class="btn btn-secondary btn-sm" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body

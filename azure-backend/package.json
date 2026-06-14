@@ -1,0 +1,8 @@
+{
+  "name": "medicare-ai-backend",
+  "version": "1.0.0",
+  "description": "Azure Functions backend for MediCare AI - Azure OpenAI + Document Intelligence",
+  "main": "src/functions/*.js",
+  "engines": { "node": ">=20" },
+  "dependencies": { "@azure/functions": "^4.5.0" }
+}
