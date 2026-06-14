@@ -2,7 +2,7 @@
 
 **Upload. Understand. Prepare.**
 
-A multi-agent workspace that turns medical reports into plain-language explanations. Upload a blood test, CT or MRI report and seven specialist AI agents extract the findings, explain every term, show their reasoning step by step, generate questions for your doctor and translate everything into Malay, Chinese and Japanese — and in live Azure mode the Research Agent grounds its citations through **Microsoft Foundry IQ** knowledge retrieval, never diagnosing. Built with Azure OpenAI, Azure Document Intelligence, Foundry IQ and Azure Functions for the **Agents League** hackathon (Creative Apps track).
+A multi-agent workspace that turns medical reports into plain-language explanations. Upload a blood test, CT or MRI report and seven specialist AI agents extract the findings, explain every term, show their reasoning step by step, generate questions for your doctor and translate everything into Malay, Chinese and Japanese — and in live Azure mode the Research Agent grounds its citations through **Microsoft Foundry IQ** knowledge retrieval, never diagnosing. Built with Azure OpenAI,  Foundry IQ and Azure Functions for the **Agents League** hackathon (Creative Apps track).
 
 > **Demo vs live:** opened as a single HTML file the app runs a *simulated* pipeline on built-in sample data (clearly labelled "Demo · sample data"). Opened with `?api=<your-function-app>` it runs **live**: real OCR, real Azure OpenAI, and real Foundry IQ retrieval whose cited sources are shown in Trusted References. Offline, references are illustrative samples — never presented as real retrieval.
 
